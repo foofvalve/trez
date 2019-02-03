@@ -6,6 +6,7 @@ const db = require('@arangodb').db;
 const errors = require('@arangodb').errors;
 const testResults = db._collection('testResults');
 const DOC_NOT_FOUND = errors.ERROR_ARANGO_DOCUMENT_NOT_FOUND.code;
+const aql = require('@arangodb').aql;
 
 module.context.use(router);
 
@@ -54,3 +55,47 @@ router.post('/results', function (req, res) {
 ), 'Entry or entries stored in the collection.')
 .summary('Store entry or entries')
 .description('Store a single entry or multiple entries in the "testResults" collection.');
+
+router.get('/results', function (req, res) {
+  
+  const keys = db._query(aql`
+    FOR entry IN ${testResults}
+    RETURN entry._key
+  `);
+  
+/*
+  const keys = db._query(
+    'FOR entry IN @@coll RETURN entry._key',
+    {'@@coll': testResults.name()}
+  );*/
+
+  res.send(keys);
+})
+.response(joi.array().items(
+  joi.string().required()
+).required(), 'List of entry keys.')
+.summary('List entry keys')
+.description('Assembles a list of keys of entries in the collection.');
+
+
+
+router.get('/resultz/:testSuite', function (req, res) {
+ 
+  const q = db._createStatement({
+    'query': `
+      FOR doc IN testResults
+      FILTER doc.testSuite ==@testSuite
+      RETURN doc
+    `
+  });
+  q.bind('testSuite', req.pathParams.testSuite);
+
+  const keys = q.execute().toArray();  
+
+  res.send(keys);
+})
+.response(joi.array().items(
+  joi.string().required()
+).required(), 'List of entry keys.')
+.summary('List entry keys')
+.description('Assembles a list of keys of entries in the collection.');
