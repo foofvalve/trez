@@ -1,0 +1,23 @@
+[
+  {
+    "created": 1549668389983,
+    "testName": "shows the results",
+    "testSuite" : "Dashboard",
+    "execution" : 1549668389983,
+    "outcome" : "Passed",
+    "project" : "IQ",
+    "testType" : "ui",
+    "duration": "15",
+    "meta": [
+      {
+        "build": "2018.12.01.2"
+      },
+      {
+        "iqEnv": "iq_onprem1"
+      },
+      {
+        "host": "DESKTOP-9BNEQME"
+      }
+    ]
+  }
+]

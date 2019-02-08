@@ -11,11 +11,16 @@ const aql = require('@arangodb').aql;
 module.context.use(router);
 
 const resultSchema = joi.object().required().keys({
+  created: joi.number().required(),
   testName: joi.string().required(),
   testSuite: joi.string().required(),
-  execution: joi.date().iso(),
-  outcome: joi.string().regex(/[wW]arning|[Pp]assed|[Ss]kipped|[Ii]nconclusive/)
+  execution: joi.number().required(),
+  outcome: joi.string().regex(/[wW]arning|[Pp]assed|[Ss]kipped|[Ii]nconclusive/).required(),
+  project: joi.string().required(),
+  execution: joi.number().optional(),
+  testType: joi.string().required()
 }).unknown(); // allow additional attributes
+
 
 router.get('/results/:key', function (req, res) {
   try {
