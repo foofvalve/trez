@@ -7,6 +7,8 @@ const errors = require('@arangodb').errors;
 const testResults = db._collection('testResults');
 const DOC_NOT_FOUND = errors.ERROR_ARANGO_DOCUMENT_NOT_FOUND.code;
 const aql = require('@arangodb').aql;
+const lib = require('./lib');
+const Results = require('./results.model');
 
 module.context.use(router);
 
@@ -61,7 +63,7 @@ router.post('/results', function (req, res) {
 .summary('Store entry or entries')
 .description('Store a single entry or multiple entries in the "testResults" collection.');
 
-router.get('/results', function (req, res) {
+router.get('/resultsss', function (req, res) {
   
   const keys = db._query(aql`
     FOR entry IN ${testResults}
@@ -106,42 +108,32 @@ router.get('/resultz/:testSuite', function (req, res) {
 .description('Assembles a list of keys of entries in the collection.');
 
 
-/*
+router.get('/results', function (req, res) {
 
-  PROPER AQL  
-  LET stat_summary = (FOR doc IN testResults
-  COLLECT outcome = doc.outcome  WITH COUNT INTO count
-  RETURN { 
-  outcome, 
-  count
-})
+  const options = {
+    project: lib.setDefault(req.queryParams.project, 'IQ'),
+    from: lib.setDefault(req.queryParams.from, 'date now -1 day'),
+    to: lib.setDefault(req.queryParams.to, 'date now '),
+    show_details: lib.setDefault(req.queryParams.show_details, false),
+    build: lib.setDefault(req.queryParams.build, null)
+  };
 
-LET suite_summary = (FOR doc IN testResults
-  COLLECT testsuite = doc.testSuite, outcome = doc.outcome  WITH COUNT INTO count
-  RETURN {  
-    testsuite, 
-    outcome, 
-    count
-})
-  
-
-LET test_results = (
-    FOR u IN testResults
-    RETURN {
-        test_suite:u.testSuite, 
-        test_name:u.testName, 
-        outcome: u.outcome
-    }
-)
-
-LET tests_details = (FOR doc IN testResults RETURN UNSET(doc, "_key", "_id", "_rev"))
-
-RETURN { 
-    stat_summary: MERGE(
-        FOR u IN stat_summary
-        RETURN { [ u.outcome ]: u.count }), 
-    suite_summary : suite_summary,
-    tests_results: test_results,
-    test_details: tests_details
-}  
-*/
+  const resultsData = Results.getResults(options);
+  console.log(resultsData)
+  if (resultsData != undefined || resultsData.length != 0) {
+    res.status(200).send(resultsData);
+  } else {
+    res.status(404).send('Not Found');    
+  }
+}, 'getStacks')
+  //.queryParam('userObjectId', Users.objectIdSchema, 'User object id that is making the request')
+  //.queryParam('page', pageSchema, 'Page number, default 1')
+  //.queryParam('pagesize', pagesizeSchema, 'Page size, default 20')
+  //.queryParam('order', orderSchema, 'Sort order of stack number, default \'asc\'')
+  //.queryParam('state', Stacks.searchStateSchema, 'Stack state, default \'\'')
+  .response(joi.object(), 'The Results.')
+  .response(401, joi.object(), 'Unauthorized')
+  .response(403, joi.object(), 'Forbidden')
+  .response(404, joi.object(), 'Not Found')
+  .summary('Get all results')
+  .description('Retrieve all results that match the provide filters');
