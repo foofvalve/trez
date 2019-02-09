@@ -11,11 +11,10 @@ const aql = require('@arangodb').aql;
 module.context.use(router);
 
 const resultSchema = joi.object().required().keys({
-  created: joi.number().required(),
   testName: joi.string().required(),
   testSuite: joi.string().required(),
   execution: joi.number().required(),
-  outcome: joi.string().regex(/[wW]arning|[Pp]assed|[Ss]kipped|[Ii]nconclusive/).required(),
+  outcome: joi.string().regex(/[fF]ailed|[wW]arning|[Pp]assed|[Ss]kipped|[Ii]nconclusive/).required(),
   project: joi.string().required(),
   execution: joi.number().optional(),
   testType: joi.string().required()
@@ -44,6 +43,7 @@ router.post('/results', function (req, res) {
 
   let data = [];
   for (var doc of body) {
+    doc.created = Date.now();
     const meta = testResults.save(doc);
     data.push(Object.assign(doc, meta));
   }
