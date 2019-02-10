@@ -13,16 +13,6 @@ const simpleAuth = require('./lib/simple.auth');
 
 module.context.use(router);
 
-const resultSchema = joi.object().required().keys({
-  testName: joi.string().required(),
-  testSuite: joi.string().required(),
-  execution: joi.number().required(),
-  outcome: joi.string().regex(/[fF]ailed|[wW]arning|[Pp]assed|[Ss]kipped|[Ii]nconclusive/).required(),
-  project: joi.string().required(),
-  execution: joi.number().optional(),
-  testType: joi.string().required()
-}).unknown(); // allow additional attributes
-
 
 router.post('/results', function (req, res) {
   if(simpleAuth.verify(req.headers.authorization)) {
@@ -40,10 +30,9 @@ router.post('/results', function (req, res) {
     res.status(401).send(['Unauthorized']);
   }
 })
-.body(joi.alternatives().try(
-  resultSchema,
-  joi.array().items(resultSchema)
-), 'Entry or entries to store in the collection.')
+.body(joi.array().items(joi.object(
+  Results.resultSchema
+)), 'An array of results to be inserted into the database')   
 .response(joi.alternatives().try(
   joi.object().required(),
   joi.array().items(joi.object().required())

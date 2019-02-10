@@ -1,4 +1,15 @@
 const db = require('@arangodb').db;
+const joi = require('joi');
+
+const resultSchema = joi.object().required().keys({
+  testName: joi.string().required(),
+  testSuite: joi.string().required(),
+  execution: joi.number().required(),
+  outcome: joi.string().regex(/[fF]ailed|[wW]arning|[Pp]assed|[Ss]kipped|[Ii]nconclusive/).required(),
+  project: joi.string().required(),
+  execution: joi.number().optional(),
+  testType: joi.string().required()
+}).unknown(); // allow additional attributes
 
 module.exports = {
   getResults(options) {
