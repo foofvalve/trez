@@ -4,7 +4,7 @@ module.exports = {
     if (value === undefined) {
       return defaultValue;
     } else {
-      return value;
+      return value.trim();
     }
   }
 };

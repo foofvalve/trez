@@ -5,14 +5,11 @@ const joi = require('joi');
 const db = require('@arangodb').db;
 const errors = require('@arangodb').errors;
 const testResults = db._collection('testResults');
-const DOC_NOT_FOUND = errors.ERROR_ARANGO_DOCUMENT_NOT_FOUND.code;
-const aql = require('@arangodb').aql;
 const lib = require('./lib');
 const Results = require('./results.model');
 const simpleAuth = require('./lib/simple.auth');
 
 module.context.use(router);
-
 
 router.post('/results', function (req, res) {
   if(simpleAuth.verify(req.headers.authorization)) {
@@ -20,12 +17,40 @@ router.post('/results', function (req, res) {
     const body = multiple ? req.body : [req.body];
 
     let data = [];
+    let failures = [];
     for (var doc of body) {
       doc.created = Date.now();
-      const meta = testResults.save(doc);
-      data.push(Object.assign(doc, meta));
+      var niceDate = new Date(doc.execution)
+      doc.execution_nice = niceDate.toISOString(); 
+      var newDocument = {};
+      try{
+        newDocument = testResults.save(doc);
+      } catch(err) {
+        failures.push(Object.assign(doc, newDocument));
+        console.log(`err => ${JSON.stringify(err)}`)
+        continue;
+      }
+      
+      if(newDocument.hasOwnProperty('_id')) {
+        data.push(Object.assign(doc, newDocument));
+      } else {
+        failures.push(Object.assign(doc, newDocument));
+      }      
     }
-    res.send(multiple ? data : data[0]);
+    
+    var result = {
+      'success': failures.length === 0 ? true : false,        
+      'inserted': {
+        'success_count' : data.length,
+        'success_list' : data,
+      },
+      'error': {
+        'error_count': failures.length,
+        'error_list': failures
+      }
+    };
+      
+    res.send(result);     
   } else {
     res.status(401).send(['Unauthorized']);
   }

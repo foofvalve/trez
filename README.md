@@ -1,12 +1,12 @@
 TODO:
 
-- Dates - sort it out
-- Trim incoming data
-- implement ALL filters
-- Tart up
-- format date in repsonse [raw, formatted]
-- proper exception handling
 - write supertests
+- implement ALL filters
+  - Dates - sort it out
+  - implement 'Show Test Details'
+
+- data for trend graph
+- Tart up
 
 
 DONE:
@@ -16,3 +16,7 @@ DONE:
 - GET - all tests summary grouped by outcome
 - Test data - lots of it
 - Auth headers - basic
+- check for dupes
+- Trim incoming data
+- proper exception handling
+- format date in repsonse [raw, formatted]
