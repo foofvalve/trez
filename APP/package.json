@@ -17,6 +17,7 @@
   "devDependencies": {
     "buffer": "^5.2.1",
     "mocha": "^5.2.0",
+    "moment": "^2.24.0",
     "supertest": "^3.4.2"
   },
   "scripts": {

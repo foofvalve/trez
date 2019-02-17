@@ -3,7 +3,6 @@ const createRouter = require('@arangodb/foxx/router');
 const router = createRouter();
 const joi = require('joi');
 const db = require('@arangodb').db;
-const errors = require('@arangodb').errors;
 const testResults = db._collection('testResults');
 const lib = require('./lib');
 const Results = require('./results.model');
@@ -71,12 +70,12 @@ router.get('/results', function (req, res) {
   if(simpleAuth.verify(req.headers.authorization)) {
     const options = {
       project: lib.setDefault(req.queryParams.project, 'IQ'),
-      from: lib.setDefault(req.queryParams.from, 'date now -1 day'),
-      to: lib.setDefault(req.queryParams.to, 'date now '),
+      from: lib.setFromDate(req.queryParams.from),
+      to: lib.setToDate(req.queryParams.to),
       show_details: lib.setDefault(req.queryParams.show_details, false),
       build: lib.setDefault(req.queryParams.build, null)
     };
-
+    console.log(`options => ${JSON.stringify(options)}`);
     const resultsData = Results.getResults(options);
     console.log(resultsData)
     if (resultsData != undefined || resultsData.length != 0) {
