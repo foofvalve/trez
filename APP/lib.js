@@ -12,21 +12,17 @@ module.exports = {
   setFromDate(possibleDate) {
     var fromDateish = moment(possibleDate);
     if(fromDateish.isValid()) {
-      console.log(`fromDateish.unix() => ${fromDateish.unix()}`)
-      return fromDateish.unix();
+      return fromDateish.format('YYYY-MM-DD');
     } else {
-      console.log(`moment().add(-1, 'day').unix() => ${moment().add(-1, 'day').unix()}`)
-      return moment().add(-1, 'day').unix();
+      return moment().add(-1, 'day').format('YYYY-MM-DD');
     }
   },
   setToDate(possibleDate) {
     var toDateish = moment(possibleDate);
     if(toDateish.isValid()) {
-      console.log(`toDateish.unix() => ${toDateish.unix()}`)
-      return toDateish.unix();
+      return toDateish.format('YYYY-MM-DD');
     } else {
-      console.log(`moment().unix() => ${moment().unix()}`)
-      return moment().unix();
+      return moment().format('YYYY-MM-DD');
     }
   }
 };

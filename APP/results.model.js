@@ -16,7 +16,7 @@ module.exports = {
     const q = db._createStatement({
       'query': `
         LET stat_summary = (FOR doc IN testResults
-          FILTER doc.project == @project && doc.execution >= @from && doc.execution <= @to
+          FILTER LOWER(doc.project) == @project && DATE_ISO8601(doc.execution) >= DATE_ISO8601(@from) && DATE_ISO8601(doc.execution) <= DATE_ISO8601(@to)
           COLLECT outcome = doc.outcome  WITH COUNT INTO count
           RETURN { 
           outcome, 
@@ -24,7 +24,7 @@ module.exports = {
         })
         
         LET suite_summary = (FOR doc IN testResults
-          FILTER doc.project == @project && doc.execution >= @from && doc.execution <= @to
+          FILTER LOWER(doc.project) == @project && DATE_ISO8601(doc.execution) >= DATE_ISO8601(@from) && DATE_ISO8601(doc.execution) <= DATE_ISO8601(@to)
           COLLECT testsuite = doc.testSuite, outcome = doc.outcome  WITH COUNT INTO count
           RETURN {  
             testsuite, 
@@ -34,7 +34,7 @@ module.exports = {
         
         LET test_results = (
             FOR u IN testResults
-            FILTER u.project == @project && u.execution >= @from && u.execution <= @to
+            FILTER LOWER(u.project) == @project && DATE_ISO8601(u.execution) >= DATE_ISO8601(@from) && DATE_ISO8601(u.execution) <= DATE_ISO8601(@to)
             RETURN {
                 test_suite:u.testSuite, 
                 test_name:u.testName, 
@@ -44,7 +44,7 @@ module.exports = {
         
         LET tests_details = (
           FOR doc IN testResults 
-          FILTER doc.project == @project && doc.execution >= @from && doc.execution <= @to
+          FILTER LOWER(doc.project) == @project && DATE_ISO8601(doc.execution) >= DATE_ISO8601(@from) && DATE_ISO8601(doc.execution) <= DATE_ISO8601(@to)
           RETURN UNSET(doc, "_key", "_id", "_rev"))
         
         RETURN { 
@@ -57,11 +57,12 @@ module.exports = {
         }  
       `
     });
-    q.bind('project', options.project);
+    q.bind('project', options.project.toLowerCase());
     q.bind('from', options.from);
     q.bind('to', options.to);
+    //q.bind('build', options.build.toLowerCase());
     //q.bind('show_details', options.show_details);
-    //q.bind('build', options.build);
+    
   
     return q.execute().toArray();  
   }
