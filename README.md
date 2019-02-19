@@ -3,7 +3,9 @@ TODO:
 - write supertests
 - implement ALL filters
 - implement 'Show Test Details'
-
+- refactor to use baseTestResults
+=> step by step filters
+=> FILTER doc.meta[*].build == [@build] && LOWER(doc.project) == @project && DATE_ISO8601(doc.execution) >= DATE_ISO8601(@from) && DATE_ISO8601(doc.execution) <= DATE_ISO8601(@to)
 - data for trend graph
 - Tart up
 
