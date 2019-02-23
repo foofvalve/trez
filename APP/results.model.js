@@ -6,6 +6,8 @@ const resultSchema = joi.object().required().keys({
   testSuite: joi.string().required(),
   execution: joi.number().required(),
   outcome: joi.string().regex(/[fF]ailed|[wW]arning|[Pp]assed|[Ss]kipped|[Ii]nconclusive/).required(),
+  stacktrace: joi.string().optional(),
+  message: joi.string().optional(),
   project: joi.string().required(),
   execution_nice: joi.number().optional(),
   testType: joi.string().required()
