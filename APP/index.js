@@ -72,7 +72,7 @@ router.get('/results', function (req, res) {
       project: lib.setDefault(req.queryParams.project, 'IQ'),
       from: lib.setFromDate(req.queryParams.from),
       to: lib.setToDate(req.queryParams.to),
-      show_details: lib.setDefault(req.queryParams.show_details, false),
+      //show_details: lib.setDefault(req.queryParams.show_details, false),
       build: lib.setDefault(req.queryParams.build, null)
     };
     console.log(`options => ${JSON.stringify(options)}`);

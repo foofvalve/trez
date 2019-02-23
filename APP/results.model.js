@@ -13,10 +13,17 @@ const resultSchema = joi.object().required().keys({
 
 module.exports = {
   getResults(options) { 
+    var filter = `LOWER(doc.project) == @project 
+                  && DATE_ISO8601(doc.execution) >= DATE_ISO8601(@from) 
+                  && DATE_ISO8601(doc.execution) <= DATE_ISO8601(@to) `;
+    if (options.build != null) {
+      filter += '&& doc.meta[*].build == [@build]';
+    }
+
     const q = db._createStatement({
       'query': `
         LET base_results = (FOR doc IN testResults
-          FILTER doc.meta[*].build == [@build] && LOWER(doc.project) == @project && DATE_ISO8601(doc.execution) >= DATE_ISO8601(@from) && DATE_ISO8601(doc.execution) <= DATE_ISO8601(@to)          
+          FILTER ${filter}     
           RETURN doc)
 
         LET stat_summary = (FOR doc IN base_results          
@@ -60,9 +67,10 @@ module.exports = {
     q.bind('project', options.project.toLowerCase());
     q.bind('from', options.from);
     q.bind('to', options.to);
-    q.bind('build', options.build.toLowerCase());
-    //q.bind('show_details', options.show_details);
-    
+    if (options.build != null) {
+      q.bind('build', options.build.toLowerCase());
+    }
+    //q.bind('show_details', options.show_details);    
   
     return q.execute().toArray();  
   }
