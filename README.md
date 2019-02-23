@@ -1,6 +1,7 @@
 TODO:
 
 - write supertests
+- generate loads of data => 2000 tests, 50 test suites, 15 days
 - implement ALL filters
 - implement 'Show Test Details'
 - data for trend graph
