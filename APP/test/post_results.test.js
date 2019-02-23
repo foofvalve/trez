@@ -16,6 +16,8 @@ describe('POST /results', function(done) {
         "execution": 1549668389983,
         "outcome": "Passed",
         "project": "MEH",
+        "message": "yo",
+        "stacktrace": "Error: Expected Song({  }) to equal 'nope'.\n    at <Jasmine>\n    at UserContext.<anonymous> (C:\\Users\\ryanr\\OneDrive\\dev\\spec\\jasmine_examples\\PlayerSpec.js:36:43)\n    at <Jasmine>",        
         "testType": "ui",
         "duration": 15,
                 "meta": [

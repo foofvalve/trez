@@ -87,14 +87,14 @@ router.get('/results', function (req, res) {
     res.status(401).send('Unauthorized');
   }    
 }, 'getStacks')
-  //.queryParam('userObjectId', Users.objectIdSchema, 'User object id that is making the request')
-  //.queryParam('page', pageSchema, 'Page number, default 1')
-  //.queryParam('pagesize', pagesizeSchema, 'Page size, default 20')
-  //.queryParam('order', orderSchema, 'Sort order of stack number, default \'asc\'')
-  //.queryParam('state', Stacks.searchStateSchema, 'Stack state, default \'\'')
+  .queryParam('project', joi.string().optional(), 'The project code, defaults to IQ')
+  .queryParam('from', joi.string().regex(/\d{4}-\d{2}\-\d{2}/).optional(), 'The test execution from date, example 2019-02-08')
+  .queryParam('to', joi.string().regex(/\d{4}-\d{2}\-\d{2}/).optional(), 'The test execution to date, example 2019-02-08')
+  .queryParam('build', joi.string().optional(), 'The build identified, eg.2018.12.01.2')
   .response(joi.object(), 'The Results.')
   .response(401, joi.object(), 'Unauthorized')
   .response(403, joi.object(), 'Forbidden')
   .response(404, joi.object(), 'Not Found')
+  .response(400, joi.array(), 'Bad Request')
   .summary('Get all results')
   .description('Retrieve all results that match the provide filters');
