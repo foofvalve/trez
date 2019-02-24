@@ -7,7 +7,7 @@ const auth = {
   password: '^HCBc#mdCSgGh2}'
 };
 
-describe('POST /results', function(done) {
+xdescribe('POST /results', function(done) {
   var payLoad = [];
   var testName = '';
 

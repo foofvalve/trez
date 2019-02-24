@@ -1,6 +1,7 @@
 const request = require('supertest');
 const expect = require('chai').expect;
 const joi = require('joi');
+const conf = require('../lib/conf');
 
 const auth = {
   username: 'autotest',
@@ -17,7 +18,7 @@ describe('POST /results', function(done) {
       {
         "testName": `Fake date agn ${testName}`,
         "testSuite": "Login",
-        "execution": 1549668389983,
+        "execution": "2019-02-23T07:14",
         "outcome": "Passed",
         "project": "MEH",
         "message": "yo",
@@ -36,9 +37,9 @@ describe('POST /results', function(done) {
 
   it('responds with 200 when a valid payload is provided', function(done) {
 
-    request('http://localhost:8529/_db/cupboard/faux_app')
+    request(conf.BASE_URL)
       .post('/results')
-      .auth(auth.username, auth.password)
+      .auth(conf.USERNAME, conf.PASSWORD)
       .send(payLoad)
       .set('Accept', 'application/json')
       .expect(function(res) {
@@ -48,16 +49,16 @@ describe('POST /results', function(done) {
   });   
 
   it('prevents duplicate test results', function(done) {
-    request('http://localhost:8529/_db/cupboard/faux_app')
+    request(conf.BASE_URL)
       .post('/results')
-      .auth(auth.username, auth.password)
+      .auth(conf.USERNAME, conf.PASSWORD)
       .send(payLoad)
       .set('Accept', 'application/json')
       .expect(200, done)
 
-    request('http://localhost:8529/_db/cupboard/faux_app')
+    request(conf.BASE_URL)
       .post('/results')
-      .auth(auth.username, auth.password)
+      .auth(conf.USERNAME, conf.PASSWORD)
       .send(payLoad)
       .set('Accept', 'application/json')
       .expect(200, done)      
@@ -71,9 +72,9 @@ describe('POST /results', function(done) {
       execution: joi.number().required()
     }) 
 
-    request('http://localhost:8529/_db/cupboard/faux_app')
+    request(conf.BASE_URL)
       .post('/results')
-      .auth(auth.username, auth.password)
+      .auth(conf.USERNAME, conf.PASSWORD)
       .send(payLoad)
       .set('Accept', 'application/json')
       .expect(200, done)

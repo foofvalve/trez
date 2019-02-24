@@ -18,14 +18,37 @@ router.post('/results', function (req, res) {
     let data = [];
     let failures = [];
     for (var doc of body) {
+      var newDocument = {};
+      var expectedSchema = {
+        testName: joi.string().required(),
+        testSuite: joi.string().required(),
+        execution: joi.string().regex(/\d{4}-\d{2}\-\d{2}/).required(),
+        outcome: joi.string().regex(/[fF]ailed|[wW]arning|[Pp]assed|[Ss]kipped|[Ii]nconclusive/).required(),
+        stacktrace: joi.string().optional(),
+        message: joi.string().optional(),
+        project: joi.string().required(),
+        execution_nice: joi.number().optional(),
+        duration: joi.number().optional(),
+        testType: joi.string().required(),
+        meta: joi.array().optional()
+      };
+
+      const {error, value}  = joi.validate(doc, expectedSchema);
+      
+      if(error != null) {
+        console.log('value => ', error);
+        failures.push(error);
+        continue;
+      }
+      
       doc.created = Date.now();
       var niceDate = new Date(doc.execution)
-      doc.execution_nice = niceDate.toISOString(); 
-      var newDocument = {};
+      doc.execution_nice = niceDate.toISOString();       
+
       try{
         newDocument = testResults.save(doc);
       } catch(err) {
-        failures.push(Object.assign(doc, newDocument));
+        failures.push(err);
         console.log(`err => ${JSON.stringify(err)}`)
         continue;
       }

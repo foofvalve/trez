@@ -16,12 +16,14 @@
   },
   "devDependencies": {
     "buffer": "^5.2.1",
+    "joi": "^14.3.1",
     "mocha": "^5.2.0",
     "moment": "^2.24.0",
     "supertest": "^3.4.2"
   },
   "scripts": {
-    "test": "mocha .\test\test-super.js"
+    "test": "mocha ./test/*.test.js",
+    "test-post": "mocha ./test/post_results.test.js"
   },
   "author": "",
   "license": "ISC"
