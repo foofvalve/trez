@@ -28,6 +28,6 @@ describe('GET /results', function() {
     request('http://localhost:8529/_db/cupboard/faux_app')
       .get('/results?project=IQ')      
       .auth(auth.username, auth.password)
-      .expect(200, done);
+      .expect(999, done);
   });  
 });
