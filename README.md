@@ -1,10 +1,9 @@
 TODO:
 
 - write supertests
-- generate loads of data => 2000 tests, 50 test suites, 15 days
 - implement ALL filters
 - implement 'Show Test Details'
-- data for trend graph
+- /GET trend data for trend graph
 
 
 DONE:
@@ -23,3 +22,4 @@ DONE:
 => FILTER doc.meta[*].build == [@build] && LOWER(doc.project) == @project && DATE_ISO8601(doc.execution) >= DATE_ISO8601(@from) && DATE_ISO8601(doc.execution) <= DATE_ISO8601(@to)
 - Tart up
 - change /post[execution] to be nice iso 
+- generate loads of data => 2000 tests, 50 test suites, 15 days

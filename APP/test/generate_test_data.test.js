@@ -1,15 +1,11 @@
 const request = require('supertest');
 const expect = require('chai').expect;
 const moment = require('moment');
+const conf = require('../lib/conf');
 
-const auth = {
-  username: 'autotest',
-  password: '^HCBc#mdCSgGh2}'
-};
 
-xdescribe('POST /results', function(done) {
+describe('POST /results', function(done) {
   var payLoad = [];
-  var testName = '';
 
   beforeEach(function() {
     var numberTests = 2000;
@@ -31,13 +27,10 @@ xdescribe('POST /results', function(done) {
         testName: testName, testSuite: randomTestSuite
       })
     }    
-
-    var payLoad = [];
+    
     for(var i=0; i <= numberOfDays; i++) {
-      var d = moment().add(-1 * i, 'day').toISOString(); 
-      console.log('d =>', d)
+      var d = moment().add(-1 * i, 'day').toISOString();
       for(var test of tests) {
-        console.log('test => ', test);
         var result = outcome[Math.floor(Math.random() * outcome.length)]
 
         payLoad.push(
@@ -59,33 +52,24 @@ xdescribe('POST /results', function(done) {
           }
         );  
       }
-
     }
-
-    //console.log('done', tests)
-    //console.log('done', testSuites)
-    console.log('payload => ', payLoad);
   });
-
 
   var randomNumber = function(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
   it('makes lots of data - blah', function(done) {
+    this.timeout(50000);
 
-  })
-
-  xit('makes lots of data', function(done) {
-
-    request('http://localhost:8529/_db/cupboard/faux_app')
+    request(conf.BASE_URL)
       .post('/results')
-      .auth(auth.username, auth.password)
+      .auth(conf.USERNAME, conf.PASSWORD)
       .send(payLoad)
       .set('Accept', 'application/json')
       .expect(function(res) {
         expect(res.body.success).to.be.equal(true);
       })
       .expect(200, done)
-  });   
+  });  
 });
