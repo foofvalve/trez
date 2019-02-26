@@ -4,7 +4,7 @@ const moment = require('moment');
 const conf = require('../lib/conf');
 
 
-describe('POST /results', function(done) {
+xdescribe('POST /results', function(done) {
   var payLoad = [];
 
   beforeEach(function() {

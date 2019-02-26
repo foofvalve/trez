@@ -1,5 +1,6 @@
 const request = require('supertest');
 const conf = require('../lib/conf');
+const joi = require('joi');
 
 describe('GET /results', function() {
   it('responds with 401 when the request is unauthenticated', function(done) {
@@ -23,8 +24,22 @@ describe('GET /results', function() {
 
   it('response adheres to the results schema', function(done) {
     request(conf.BASE_URL)
-      .get('/results?project=IQ')      
+      .get('/results?project=IQ&from=2019-02-20&to=2019-02-21')      
       .auth(conf.USERNAME, conf.PASSWORD)
-      .expect(999, done);
+      .expect(200)
+      .expect(function(res) {
+        var expectedSchema = {
+          stat_summary: joi.object().required(),
+          suite_summary: joi.array().required(),
+          tests_results: joi.array().required(),
+          test_details: joi.object()
+        };
+  
+        const {error, value}  = joi.validate(res.body, expectedSchema);
+        
+        if(error != null) {
+          expect(value).to.be.null;
+        }        
+      }).end(done); 
   });  
 });
