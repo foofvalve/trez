@@ -85,17 +85,18 @@ describe('POST /results', function(done) {
           success: joi.boolean().required(),
           inserted: joi.object({
             success_count: joi.number().required(),
-            success_list: joi.array(joi.object({testResultSchema})),
+            success_list: joi.array().required(),
             error: joi.object({
               error_count: joi.number().required(),
               error_list: joi.array()
-            })
+            }).optional()
           }).required()
         };
   
         const {error, value}  = joi.validate(res.body, expectedSchema);
         
         if(error != null) {
+          console.log('', errors);
           expect(value).to.be.null;
         }       
       }).end(done); 

@@ -14,6 +14,19 @@ const resultSchema = joi.object().required().keys({
 }).unknown(); // allow additional attributes
 
 module.exports = {
+  getTrend() {
+    // get execution date dates for the last 7
+    // get unique test case name using date range from above (max)/min
+    // for each execution date
+    //    get the tests results
+
+    // build the matrix
+
+    // EXCEPTIONS :
+    // - no data
+    // - partial data
+    // - get the actual build identifier
+  },
   getResults(options) { 
     var filter = `LOWER(doc.project) == @project 
                   && DATE_ISO8601(doc.execution) >= DATE_ISO8601(@from) 

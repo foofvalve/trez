@@ -4,6 +4,9 @@ TODO:
 - implement ALL filters
 - implement 'Show Test Details'
 - /GET trend data for trend graph
+- custom jasmine reporter to post to
+  * must get the build identifier
+  * must get the hostname
 
 
 DONE:
