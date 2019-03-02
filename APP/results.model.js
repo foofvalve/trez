@@ -16,9 +16,33 @@ const resultSchema = joi.object().required().keys({
 module.exports = {
   getTrend() {
     // get execution date dates for the last 7
+    /*
+        LET n = (FOR doc IN testResults
+        SORT DATE_ISO8601(doc.execution) desc 
+        RETURN DISTINCT DATE_FORMAT(DATE_ISO8601(doc.execution), "%yyyy-%mm-%dd"))
+    
+        LET dates = (FOR k in n LIMIT 7 RETURN k)
+
+        RETURN dates
+    */
+
     // get unique test case name using date range from above (max)/min
+      /*
+      FOR doc in testResults
+        FILTER doc.execution >=  DATE_ISO8601(@from) && doc.execution >=  DATE_ISO8601(@to)
+        RETURN { full_test: CONCAT(doc.testSuite,"-", doc.testName) }
+      */
+     
     // for each execution date
     //    get the tests results
+    /*
+            FOR doc in testResults
+              FILTER  DATE_FORMAT(DATE_ISO8601(doc.execution), "%yyyy-%mm-%dd") == @executionDate
+              RETURN {
+                  full_qualified: CONCAT(doc.testSuite,"-", doc.testName),
+                  outcome: doc.outcome
+              }
+    */
 
     // build the matrix
 
