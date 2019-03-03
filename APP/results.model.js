@@ -31,8 +31,8 @@ module.exports = {
     var summary = [];
 
     var testCaseNames = this.getTestCaseNames({
-      to: executionDates[executionDates.length - 1],
-      from: executionDates[0]
+      from: executionDates[executionDates.length - 1],
+      to: executionDates[0]
     });
 
     testCaseNames.forEach((testFully) => {
@@ -85,7 +85,7 @@ module.exports = {
       'query': `
       FOR doc in testResults
         SORT CONCAT(doc.testSuite,"-", doc.testName)
-        FILTER doc.execution >=  DATE_ISO8601(@from) && doc.execution >=  DATE_ISO8601(@to)
+        FILTER DATE_ISO8601(doc.execution) >=  DATE_ISO8601(@from) && DATE_ISO8601(doc.execution) <=  DATE_ISO8601(@to)
         RETURN distinct { full_test: CONCAT(doc.testSuite,"-", doc.testName) }
       `
     });
