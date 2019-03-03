@@ -3,7 +3,7 @@ TODO:
 - write supertests
 - implement ALL filters
 - implement 'Show Test Details'
-- /GET trend data for trend graph
+- /GET trend data for trend graph - test with smaller data
 - custom jasmine reporter to post to
   * must get the build identifier
   * must get the hostname

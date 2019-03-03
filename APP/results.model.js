@@ -16,41 +16,98 @@ const resultSchema = joi.object().required().keys({
 module.exports = {
   getTrend() {
     // get execution date dates for the last 7
-    /*
-        LET n = (FOR doc IN testResults
+    var executionDates = this.getExecutionDates()[0];    
+
+    var rez = [];
+    for(var i =0; i <= 6; i++){
+      if(executionDates[i] != undefined) {
+        rez[i] = this.getTestResultsForDate(executionDates[i]);
+      } else {
+        rez[i] = [];
+      }
+    }
+
+    // build the matrix
+    var summary = [];
+
+    var testCaseNames = this.getTestCaseNames({
+      to: executionDates[executionDates.length - 1],
+      from: executionDates[0]
+    });
+
+    testCaseNames.forEach((testFully) => {
+      var test = testFully.full_test
+      summary.push({
+        "test_name" : test,
+        "a": this.getTestOutcome(test, rez[6]),
+        "b": this.getTestOutcome(test, rez[5]),
+        "c": this.getTestOutcome(test, rez[4]),
+        "d": this.getTestOutcome(test, rez[3]),
+        "e": this.getTestOutcome(test, rez[2]),
+        "f": this.getTestOutcome(test, rez[1]),
+        "g": this.getTestOutcome(test, rez[0])
+      })
+    })
+
+    return summary;
+    // EXCEPTIONS :
+    // - no data
+    // - partial data
+    // - get the actual build identifier
+
+
+  },
+  getTestOutcome(testName, results) {
+    var result = results.filter((e) => e.full_qualified == testName);
+  
+    if (typeof result !== 'undefined' && result.length > 0) {
+      return result[0].outcome;
+    } else {
+      return '';
+    }
+  },
+  getTestResultsForDate(executionDate) { 
+    const q = db._createStatement({
+      'query': `
+      FOR doc in testResults
+      FILTER  DATE_FORMAT(DATE_ISO8601(doc.execution), "%yyyy-%mm-%dd") == @executionDate
+      RETURN {
+          full_qualified: CONCAT(doc.testSuite,"-", doc.testName),
+          outcome: doc.outcome
+      }
+      `
+    });
+    q.bind('executionDate', executionDate);
+    return q.execute().toArray();  
+  },    
+  getTestCaseNames(options) { 
+    const q = db._createStatement({
+      'query': `
+      FOR doc in testResults
+        SORT CONCAT(doc.testSuite,"-", doc.testName)
+        FILTER doc.execution >=  DATE_ISO8601(@from) && doc.execution >=  DATE_ISO8601(@to)
+        RETURN distinct { full_test: CONCAT(doc.testSuite,"-", doc.testName) }
+      `
+    });
+    q.bind('from', options.from);
+    q.bind('to', options.to);
+    return q.execute().toArray();  
+  },   
+  getExecutionDates() { 
+    const q = db._createStatement({
+      'query': `
+      LET n = (FOR doc IN testResults
         SORT DATE_ISO8601(doc.execution) desc 
         RETURN DISTINCT DATE_FORMAT(DATE_ISO8601(doc.execution), "%yyyy-%mm-%dd"))
     
         LET dates = (FOR k in n LIMIT 7 RETURN k)
 
         RETURN dates
-    */
+      `
+    });
 
-    // get unique test case name using date range from above (max)/min
-      /*
-      FOR doc in testResults
-        FILTER doc.execution >=  DATE_ISO8601(@from) && doc.execution >=  DATE_ISO8601(@to)
-        RETURN { full_test: CONCAT(doc.testSuite,"-", doc.testName) }
-      */
-     
-    // for each execution date
-    //    get the tests results
-    /*
-            FOR doc in testResults
-              FILTER  DATE_FORMAT(DATE_ISO8601(doc.execution), "%yyyy-%mm-%dd") == @executionDate
-              RETURN {
-                  full_qualified: CONCAT(doc.testSuite,"-", doc.testName),
-                  outcome: doc.outcome
-              }
-    */
-
-    // build the matrix
-
-    // EXCEPTIONS :
-    // - no data
-    // - partial data
-    // - get the actual build identifier
-  },
+    return q.execute().toArray();  
+  },  
   getResults(options) { 
     var filter = `LOWER(doc.project) == @project 
                   && DATE_ISO8601(doc.execution) >= DATE_ISO8601(@from) 

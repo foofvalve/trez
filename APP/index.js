@@ -121,3 +121,26 @@ router.get('/results', function (req, res) {
   .response(400, joi.array(), 'Bad Request')
   .summary('Get all results')
   .description('Retrieve all results that match the provide filters');
+
+
+router.get('/results/trend', function (req, res) {
+
+  if(simpleAuth.verify(req.headers.authorization)) {
+    const resultsData = Results.getTrend();
+    console.log(resultsData)
+    if (resultsData != undefined || resultsData.length != 0) {
+      res.status(200).send(resultsData);
+    } else {
+      res.status(404).send('Not Found');    
+    }    
+  } else {
+    res.status(401).send('Unauthorized');
+  }    
+}, 'getStacks')
+  .response(joi.object(), 'The results trend')
+  .response(401, joi.object(), 'Unauthorized')
+  .response(403, joi.object(), 'Forbidden')
+  .response(404, joi.object(), 'Not Found')
+  .response(400, joi.array(), 'Bad Request')
+  .summary('Get all results')
+  .description('Retrieve all results that match the provide filters');
