@@ -4,15 +4,15 @@ const moment = require('moment');
 const conf = require('../lib/conf');
 
 
-xdescribe('POST /results', function(done) {
+describe('POST /results', function(done) {
   var payLoad = [];
 
   beforeEach(function() {
-    var numberTests = 2000;
-    var numberTestSuites = 46;
+    var numberTests = 10;
+    var numberTestSuites = 2;
     var tests = [];
     var testSuites = [];
-    var numberOfDays = 15;
+    var numberOfDays = 3;
     var outcome = ['Passed', 'Failed'];
 
     for (var i = 0; i <= numberTestSuites; i++) {
