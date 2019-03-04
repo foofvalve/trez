@@ -17,6 +17,9 @@ module.exports = {
   getTrend() {
     // get execution date dates for the last 7
     var executionDates = this.getExecutionDates()[0];    
+    if(executionDates.length == 0) {
+      return [];
+    }
 
     var rez = [];
     for(var i =0; i <= 6; i++){
@@ -50,12 +53,6 @@ module.exports = {
     })
 
     return summary;
-    // EXCEPTIONS :
-    // - no data
-    // - partial data
-    // - get the actual build identifier
-
-
   },
   getTestOutcome(testName, results) {
     var result = results.filter((e) => e.full_qualified == testName);
@@ -70,7 +67,7 @@ module.exports = {
     const q = db._createStatement({
       'query': `
       FOR doc in testResults
-      FILTER  DATE_FORMAT(DATE_ISO8601(doc.execution), "%yyyy-%mm-%dd") == @executionDate
+      FILTER doc.execution_date == @executionDate
       RETURN {
           full_qualified: CONCAT(doc.testSuite,"-", doc.testName),
           outcome: doc.outcome
@@ -98,7 +95,7 @@ module.exports = {
       'query': `
       LET n = (FOR doc IN testResults
         SORT DATE_ISO8601(doc.execution) desc 
-        RETURN DISTINCT DATE_FORMAT(DATE_ISO8601(doc.execution), "%yyyy-%mm-%dd"))
+        RETURN DISTINCT doc.execution_date)
     
         LET dates = (FOR k in n LIMIT 7 RETURN k)
 

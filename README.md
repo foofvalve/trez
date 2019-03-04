@@ -3,10 +3,10 @@ TODO:
 - write supertests
 - implement ALL filters
 - implement 'Show Test Details'
-- /GET trend data for trend graph - test with smaller data
 - custom jasmine reporter to post to
   * must get the build identifier
   * must get the hostname
+- foxx reverse proxy  
 
 
 DONE:
@@ -26,3 +26,4 @@ DONE:
 - Tart up
 - change /post[execution] to be nice iso 
 - generate loads of data => 2000 tests, 50 test suites, 15 days
+- /GET trend data for trend graph - test with smaller data

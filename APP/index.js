@@ -44,6 +44,7 @@ router.post('/results', function (req, res) {
       doc.created = Date.now();
       var niceDate = new Date(doc.execution)
       doc.execution_nice = niceDate.toISOString();       
+      doc.execution_date = niceDate.toISOString().split('T')[0];
 
       try{
         newDocument = testResults.save(doc);

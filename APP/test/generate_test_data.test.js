@@ -8,7 +8,7 @@ describe('POST /results', function(done) {
   var payLoad = [];
 
   beforeEach(function() {
-    var numberTests = 10;
+    var numberTests = 7;
     var numberTestSuites = 2;
     var tests = [];
     var testSuites = [];
