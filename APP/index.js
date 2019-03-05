@@ -46,12 +46,13 @@ router.post('/results', function (req, res) {
       doc.execution_nice = niceDate.toISOString();       
       doc.execution_date = niceDate.toISOString().split('T')[0];
 
-      try{
+      var existingDoc = Results.getTestResultId(doc);        
+      if (existingDoc.length == 0) {
         newDocument = testResults.save(doc);
-      } catch(err) {
-        failures.push(err);
-        console.log(`err => ${JSON.stringify(err)}`)
-        continue;
+      } else {
+        newDocument = testResults.update(existingDoc[0], doc, {
+          overwrite: true
+        });
       }
       
       if(newDocument.hasOwnProperty('_id')) {
@@ -65,7 +66,7 @@ router.post('/results', function (req, res) {
       'success': failures.length === 0 ? true : false,        
       'inserted': {
         'success_count' : data.length,
-        'success_list' : data,
+        'success_list' : data
       },
       'error': {
         'error_count': failures.length,

@@ -8,11 +8,11 @@ describe('POST /results', function(done) {
   var payLoad = [];
 
   beforeEach(function() {
-    var numberTests = 7;
-    var numberTestSuites = 2;
+    var numberTests = 2000;
+    var numberTestSuites = 10;
     var tests = [];
     var testSuites = [];
-    var numberOfDays = 3;
+    var numberOfDays = 15;
     var outcome = ['Passed', 'Failed'];
 
     for (var i = 0; i <= numberTestSuites; i++) {
@@ -60,7 +60,7 @@ describe('POST /results', function(done) {
   }
 
   it('makes lots of data - blah', function(done) {
-    this.timeout(50000);
+    this.timeout(50000000);
 
     request(conf.BASE_URL)
       .post('/results')

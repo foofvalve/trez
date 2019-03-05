@@ -166,5 +166,21 @@ module.exports = {
     //q.bind('show_details', options.show_details);    
   
     return q.execute().toArray();  
+  },  
+  getTestResultId(options) { 
+    const q = db._createStatement({
+      'query': `
+      FOR doc IN testResults
+      FILTER doc.testName == @testName && doc.testSuite ==@testSuite && doc.execution_date == @execution_date
+      RETURN doc
+      `
+    });
+    q.bind('testName', options.testName);
+    q.bind('testSuite', options.testSuite);
+
+    var execDate = options.execution.split('T')[0];
+    q.bind('execution_date', execDate);
+  
+    return q.execute().toArray();  
   }
 };

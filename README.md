@@ -1,5 +1,8 @@
 TODO:
 
+-- html generator
+- email senderer
+
 - write supertests
 - implement ALL filters
 - implement 'Show Test Details'
@@ -27,3 +30,6 @@ DONE:
 - change /post[execution] to be nice iso 
 - generate loads of data => 2000 tests, 50 test suites, 15 days
 - /GET trend data for trend graph - test with smaller data
+- update when dupe found,
+- add index to
+- update setup script
