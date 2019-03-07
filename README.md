@@ -1,6 +1,13 @@
 TODO:
 
 -- html generator
+  * handle nulls
+  * handle passed AND failed must be shown 0 if null
+  * show message when outcome == failed
+  * tart up => skin and icons > maybe graph
+  * include trend data
+  * toPdf()
+
 - email senderer
 
 - write supertests
