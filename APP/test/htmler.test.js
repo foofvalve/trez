@@ -1,4 +1,6 @@
-var htmler = require('../lib/htmler')
+var htmler = require('../lib/htmler');
+const tempDir = require('temp-dir');
+const expect = require('chai').expect;
 
 describe('htmler', function() {
   var testData = {};
@@ -8,11 +10,17 @@ describe('htmler', function() {
   });
 
   it('generates html file', function() {
-    htmler.generateHtml(testData, '');
-    // expect ...
+    var result = htmler.generateHtml(testData, tempDir + '\\estoutput.html');
+    expect(result).to.equal(true);
   });  
-
-  it('generates pdf file', function() {
-
+  
+  it('handles empty data', function() {
+    var result = htmler.generateHtml(testData, tempDir + '\\estoutput.html');
+    expect(result).to.equal(true);
+  });  
+  
+  it('fails when invalid save location is provided', function() {
+    var result = htmler.generateHtml(testData, tempDir + '\-\novalid]\testoutput.html');
+    expect(result).to.equal(true);
   });    
 });

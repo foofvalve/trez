@@ -4,7 +4,17 @@ module.exports = {
   generateHtml(data, saveLocation) {
     var html = `
     <html>
-      <head><title>Test Automation Results</title></head>
+    <head>
+      <style>
+      body {
+          height: 842px;
+          width: 595px;
+          /* to centre page on screen*/
+          margin-left: auto;
+          margin-right: auto;
+      }
+      </style>
+    </head>
       <body>
         <div>
           <div>
@@ -58,13 +68,14 @@ module.exports = {
     </html>
     `
     
-    console.log(html);
+    //console.log(html);
 
     writeFile(saveLocation, html, function(err) {
       if (err) {
         console.log(err);
         return err;
       } else {
+        console.log('Generated => ', saveLocation);
         return true;
       }
     });

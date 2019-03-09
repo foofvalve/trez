@@ -1,17 +1,21 @@
-var pdfer = require('../lib/pdfer')
+var pdfer = require('../lib/pdfer');
+var htmler = require('../lib/htmler');
+const tempDir = require('temp-dir');
+const expect = require('chai').expect;
 
 describe('pdfer', function() {
   var testData = {};
 
   beforeEach(function() {
     testData = require('../test/fixtures/htmler.test.data.json');
-    htmler.generateHtml(testData, USER_TEMP_DIR);
+    htmler.generateHtml(testData, tempDir + '\\yo.html');
   });
 
   it('generates pdf file', function() {
-    var htmlFile = '';
+    var htmlFile = tempDir + '\\yo.html';
 
-    pdfer.generatePdf(htmlFile);
+    var result = pdfer.generatePdf('C:\\Users\\ryanr\\AppData\\Local\\Temp\\yo.html');
+    expect(result).toBe(true);
 
     // expect
   });    

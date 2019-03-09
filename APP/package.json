@@ -16,10 +16,12 @@
   },
   "devDependencies": {
     "buffer": "^5.2.1",
+    "html-pdf": "^2.2.0",
     "joi": "^14.3.1",
     "mocha": "^5.2.0",
     "moment": "^2.24.0",
     "supertest": "^3.4.2",
+    "temp-dir": "^1.0.0",
     "write": "^1.0.3"
   },
   "scripts": {
