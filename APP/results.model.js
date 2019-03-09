@@ -69,7 +69,7 @@ module.exports = {
       FOR doc in testResults
       FILTER doc.execution_date == @executionDate
       RETURN {
-          full_qualified: CONCAT(doc.testSuite,"-", doc.testName),
+          full_qualified: CONCAT(doc.testSuite," - ", doc.testName),
           outcome: doc.outcome
       }
       `
@@ -81,9 +81,9 @@ module.exports = {
     const q = db._createStatement({
       'query': `
       FOR doc in testResults
-        SORT CONCAT(doc.testSuite,"-", doc.testName)
+        SORT CONCAT(doc.testSuite," - ", doc.testName)
         FILTER DATE_ISO8601(doc.execution) >=  DATE_ISO8601(@from) && DATE_ISO8601(doc.execution) <=  DATE_ISO8601(@to)
-        RETURN distinct { full_test: CONCAT(doc.testSuite,"-", doc.testName) }
+        RETURN distinct { full_test: CONCAT(doc.testSuite," - ", doc.testName) }
       `
     });
     q.bind('from', options.from);
@@ -116,6 +116,7 @@ module.exports = {
     const q = db._createStatement({
       'query': `
         LET base_results = (FOR doc IN testResults
+          SORT CONCAT(doc.testSuite," - ", doc.testName)
           FILTER ${filter}     
           RETURN doc)
 

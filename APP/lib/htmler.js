@@ -1,7 +1,7 @@
 var writeFile = require('write');
 
 module.exports = {
-  generateHtml(data, saveLocation) {
+  generateHtml(data, trend, saveLocation) {
     var html = `
     <html>
     <head>
@@ -52,6 +52,23 @@ module.exports = {
                   ${data[0].test_details.map(x=> `<tr><td>${x.testSuite} - ${x.testName}</td><td>${x.duration}</td><td>${x.outcome}</td></tr>`).join('')}          
               </table>
           </div>      
+
+          <div>
+            <span>Trend</span>
+              <table>
+                <tr>
+                  <th>Test</th>
+                  <th>&nbsp;</th>
+                  <th>&nbsp;</th>
+                  <th>&nbsp;</th>
+                  <th>&nbsp;</th>
+                  <th>&nbsp;</th>
+                  <th>&nbsp;</th>
+                  <th>&nbsp;</th>
+                </tr>
+                  ${trend.map(x=> `<tr><td>${x.test_name}</td><td>${x.a}</td><td>${x.b}</td><td>${x.c}</td><td>${x.d}</td><td>${x.e}</td><td>${x.f}</td><td>${x.g}</td></tr>`).join('')}          
+              </table>
+          </div>              
     
           <div>
             <span>Tests</span>
