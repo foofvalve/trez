@@ -1,4 +1,5 @@
 const moment = require('moment');
+const fs =  require('fs');
 
 module.exports = {
 
@@ -11,7 +12,7 @@ module.exports = {
   },
   setFromDate(possibleDate) {
     var fromDateish = moment(possibleDate);
-    if(fromDateish.isValid()) {
+    if (fromDateish.isValid()) {
       return fromDateish.format('YYYY-MM-DD');
     } else {
       return moment().add(-1, 'day').format('YYYY-MM-DD');
@@ -19,10 +20,17 @@ module.exports = {
   },
   setToDate(possibleDate) {
     var toDateish = moment(possibleDate);
-    if(toDateish.isValid()) {
+    if (toDateish.isValid()) {
       return toDateish.format('YYYY-MM-DD');
     } else {
       return moment().format('YYYY-MM-DD');
+    }
+  },
+  fileExists(filePath) {
+    try {
+      return fs.statSync(filePath).isFile();
+    } catch (err) {
+      return false;
     }
   }
 };

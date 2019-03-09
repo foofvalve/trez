@@ -12,11 +12,15 @@ describe('pdfer', function() {
   });
 
   it('generates pdf file', function() {
-    var htmlFile = tempDir + '\\yo.html';
-
     var result = pdfer.generatePdf('C:\\Users\\ryanr\\AppData\\Local\\Temp\\yo.html');
-    expect(result).toBe(true);
+    expect(result.result).to.equal(true);
+  });   
+  
+  it('fails when an invalid html file is provided', function() {
+    var htmlFile = tempDir + '\\nope-fail\\yo.html';
 
-    // expect
-  });    
+    var result = pdfer.generatePdf(htmlFile);
+    expect(result.result).to.equal(false);
+    expect(result.message).to.contain('Unable to find html file'); 
+  }); 
 });

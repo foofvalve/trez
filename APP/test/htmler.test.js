@@ -13,16 +13,18 @@ describe('htmler', function() {
 
   it('generates html file', function() {
     var result = htmler.generateHtml(testData, testTrendData, tempDir + '\\estoutput.html');
-    expect(result).to.equal(true);
+    expect(result.result).to.equal(true);
   });  
   
   it('handles empty data', function() {
+    testData = [{}];
     var result = htmler.generateHtml(testData, testTrendData, tempDir + '\\estoutput.html');
-    expect(result).to.equal(true);
+    expect(result.result).to.equal(true);
   });  
   
-  it('fails when invalid save location is provided', function() {
+  it('fails when invalid save location is provided', function() {    
     var result = htmler.generateHtml(testData, testTrendData, tempDir + '\-\novalid]\testoutput.html');
-    expect(result).to.equal(true);
+    expect(result.result).to.equal(false);
+    expect(result.message).to.contain('Invalid save location');    
   });    
 });

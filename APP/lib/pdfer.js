@@ -1,19 +1,39 @@
 var pdf = require('html-pdf');
 const fs = require('fs');
+const fileChecker = require('../lib').fileExists;
 
 module.exports = {
   generatePdf(pathToHtmlFile) {
-    var html = fs.readFileSync(pathToHtmlFile, 'utf8');
-    var pdfFile = pathToHtmlFile.replace('.html','.pdf')
-    var options = { format: 'A3', orientation: 'landscape' };
+    if (!fileChecker(pathToHtmlFile)) {
+      return {
+        result: false,
+        message: `Unable to find html file [${pathToHtmlFile}]`
+      };
+    }
 
-    pdf.create(html).toFile(pdfFile, function(err, res) {
-      if (err) {
-        return err;
-      } else {
-        console.log('Generated => ', pdfFile);
-        return true;
-      }
-    });
+    var html = fs.readFileSync(pathToHtmlFile, 'utf8');
+    var pdfFile = pathToHtmlFile.replace('.html', '.pdf')
+    var options = {
+      format: 'A3',
+      orientation: 'landscape'
+    };
+
+    try {
+      pdf.create(html, options).toFile(pdfFile, function (err, res) {
+        if (err) {
+          throw err;
+        } 
+      });
+
+      return {
+        result: true,
+        message: `Pdf created [${pathToHtmlFile}]`
+      };
+    } catch {
+      return {
+        result: false,
+        message: `Failed to create [${pathToHtmlFile}]`
+      };
+    }
   }
 }
