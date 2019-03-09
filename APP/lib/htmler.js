@@ -1,7 +1,7 @@
-
+var writeFile = require('write');
 
 module.exports = {
-  generateHtml(data) {
+  generateHtml(data, saveLocation) {
     var html = `
     <html>
       <head><title>Test Automation Results</title></head>
@@ -59,6 +59,14 @@ module.exports = {
     `
     
     console.log(html);
-    return html;
+
+    writeFile(saveLocation, html, function(err) {
+      if (err) {
+        console.log(err);
+        return err;
+      } else {
+        return true;
+      }
+    });
   }
 };
