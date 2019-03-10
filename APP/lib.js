@@ -3,11 +3,11 @@ const fs =  require('fs');
 
 module.exports = {
 
-  setDefault(value, defaultValue) {
+  setDefault(value, defaultValue) {    
     if (value === undefined) {
       return defaultValue;
     } else {
-      return value.trim();
+      return value;
     }
   },
   setFromDate(possibleDate) {

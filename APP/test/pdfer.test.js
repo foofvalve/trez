@@ -8,11 +8,12 @@ describe('pdfer', function() {
 
   beforeEach(function() {
     testData = require('../test/fixtures/htmler.test.data.json');
-    htmler.generateHtml(testData, tempDir + '\\yo.html');
+    testTrendData = require('../test/fixtures/htmler.test.trend.data.json');
+    var result = htmler.generateHtml(testData, testTrendData, tempDir + '\\yo.html');    
   });
 
   it('generates pdf file', function() {
-    var result = pdfer.generatePdf('C:\\Users\\ryanr\\AppData\\Local\\Temp\\yo.html');
+    var result = pdfer.generatePdf(tempDir + '\\yo.html');
     expect(result.result).to.equal(true);
   });   
   

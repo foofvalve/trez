@@ -41,3 +41,4 @@ DONE:
 - update setup script
  * include trend data
   * toPdf()
+ - results uploader script 

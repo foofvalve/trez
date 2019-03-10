@@ -1,47 +1,43 @@
 var writeFile = require('write');
 const fileChecker = require('../lib').fileExists;
+const defaultTo =  require('../lib').setDefault;
 
 module.exports = {
   generateHtml(data, trend, saveLocation) {
+// TODO: check if savelocation is valid folder
+/*
     if (!fileChecker(saveLocation)) {
       return {
         result: false,
         message: `Invalid save location [${saveLocation}]`
       };
     }
-
+*/
     var html = '';
-    if (data != {} && data[0].stat_summary != undefined) {
+    if (data != [{}] && data[0].stat_summary != undefined) {
       html = `
-      <html>
+      <!doctype html>
+      <html lang="en">
       <head>
-        <style>
-        body {
-            height: 842px;
-            width: 595px;
-            /* to centre page on screen*/
-            margin-left: auto;
-            margin-right: auto;
-        }
-        </style>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
+          <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
       </head>
         <body>
-          <div>
-            <div>
-              <span>Summary</span>
-              <div>Passed: ${data[0].stat_summary.Passed}</div>
-              <div>Failed: ${data[0].stat_summary.Failed}</div>
-              <div>Total: ${data[0].stat_summary.Failed + data[0].stat_summary.Passed}</div>
+          <div class="container is-fluid">
+            <div class="notification">
+              <h2 class="title is-2">Summary - Build: ${defaultTo(data[0].test_details[0].meta[0].build, '-')}</h2>
+              <a class="button is-success">${defaultTo(data[0].stat_summary.Passed, 0)} | Passed</a>
+              <a class="button is-danger">${defaultTo(data[0].stat_summary.Failed, 0)} | Failed</a>
+              <a class="button is-info">${defaultTo(data[0].stat_summary.Failed, 0) + defaultTo(data[0].stat_summary.Passed, 0)} | Total</a>
               <hr/>
-              <div>Build: ${data[0].test_details[0].meta[0].build}</div>
-              <div>IQ Env: ${data[0].test_details[0].meta[0].iqEnv}</div>
-              <div>Host: ${data[0].test_details[0].meta[0].host}</div>
             </div>
             <br />
             <hr/>
             <div>
               <span>Test Suites</span>
-              <table>
+                <table class="table">
                 <tr>
                   <th>Suite</th>
                   <th>Outcome</th>
@@ -53,7 +49,7 @@ module.exports = {
       
             <div>
               <span>Tests</span>
-                <table>
+                <table class="table">
                   <tr>
                     <th>Test</th>
                     <th>Duration</th>
@@ -65,7 +61,7 @@ module.exports = {
   
             <div>
               <span>Trend</span>
-                <table>
+                <table class="table">
                   <tr>
                     <th>Test</th>
                     <th>&nbsp;</th>
@@ -135,5 +131,23 @@ module.exports = {
         message: `Failed to create [${saveLocation}]`
       };
     }
+  },
+  meh() {
+    var testSuites = n[0].suite_summary.map(x => x.testsuite)
+    var unique = testSuites.filter( this.onlyUnique );
+    var k = unique.map(function(x) {
+      return {suitename: x, passed:0,failed:0}
+    })  
+
+    n[0].suite_summary.map(function(x) {
+      if(x.outcome == 'Failed')
+        return {testsuite: x.testsuite, failed: x.count}
+      else 
+        return {testsuite: x.testsuite, passed: x.count}
+    })
+
+  },
+  onlyUnique(value, index, self) { 
+    return self.indexOf(value) === index;
   }
 };

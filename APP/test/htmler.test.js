@@ -18,7 +18,8 @@ describe('htmler', function() {
   
   it('handles empty data', function() {
     testData = [{}];
-    var result = htmler.generateHtml(testData, testTrendData, tempDir + '\\estoutput.html');
+    var result = htmler.generateHtml(testData, testTrendData, tempDir + '\\emptyestoutput.html');
+    console.log('result => ', result)
     expect(result.result).to.equal(true);
   });  
   
