@@ -1,0 +1,18 @@
+[
+  {
+    "testName": "PRod FFfakfe ddate afvfalidgnld222",
+    "testSuite": "Lofgin",
+    "execution": "2019-02-25T07:14",
+    "outcome": "Passed",
+    "project": "fdsfsdf",
+    "message": "nope",
+    "stacktrace": "check",
+    "testType": "ui",
+    "duration": 15,
+            "meta": [
+             {
+                 "build": "2019.12.02.2",
+    "iqEnv": "iq_onprem1",
+    "host": "DESKTOP-9BNEQME"}]
+  }
+ ]
