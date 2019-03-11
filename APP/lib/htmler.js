@@ -33,59 +33,38 @@ module.exports = {
               <a class="button is-info">${defaultTo(data[0].stat_summary.Failed, 0) + defaultTo(data[0].stat_summary.Passed, 0)} | Total</a>
               <hr/>
             </div>
-            <br />
             <hr/>
-            <div>
-              <span>Test Suites</span>
-                <table class="table">
-                <tr>
-                  <th>Suite</th>
-                  <th>Outcome</th>
-                  <th>Count</th>
-                </tr>
-                  ${data[0].suite_summary.map(x=> `<tr><td>${x.testsuite}</td><td>${x.outcome}</td><td>${x.count}</td></tr>`).join('')}          
-              </table>
-            </div>
-      
-            <div>
-              <span>Tests</span>
-                <table class="table">
-                  <tr>
-                    <th>Test</th>
-                    <th>Duration</th>
-                    <th>Outcome</th>
-                  </tr>
-                    ${data[0].test_details.map(x=> `<tr><td>${x.testSuite} - ${x.testName}</td><td>${x.duration}</td><td>${x.outcome}</td></tr>`).join('')}          
-                </table>
-            </div>      
-  
-            <div>
-              <span>Trend</span>
-                <table class="table">
-                  <tr>
-                    <th>Test</th>
-                    <th>&nbsp;</th>
-                    <th>&nbsp;</th>
-                    <th>&nbsp;</th>
-                    <th>&nbsp;</th>
-                    <th>&nbsp;</th>
-                    <th>&nbsp;</th>
-                    <th>&nbsp;</th>
-                  </tr>
-                    ${trend.map(x=> `<tr><td>${x.test_name}</td><td>${x.a}</td><td>${x.b}</td><td>${x.c}</td><td>${x.d}</td><td>${x.e}</td><td>${x.f}</td><td>${x.g}</td></tr>`).join('')}          
-                </table>
+            <div class="columns">
+              <div class="column is-one-third">
+                <div class="box">              
+                    <table class="table">
+                    <tr>
+                      <th>Test Suite</th>
+                      <th>Outcome</th>
+                      <th></th>
+                    </tr>
+                      ${data[0].suite_summary.map(x=> `<tr><td>${x.testsuite}</td><td>${x.outcome}</td><td>${x.count}</td></tr>`).join('')}          
+                  </table>
+                </div>
+              </div> 
+              <div class="column">
+                <div class="box">               
+                  <table class="table">
+                    <tr>
+                      <th>Trend</th>
+                      <th>&nbsp;</th>
+                      <th>&nbsp;</th>
+                      <th>&nbsp;</th>
+                      <th>&nbsp;</th>
+                      <th>&nbsp;</th>
+                      <th>&nbsp;</th>
+                      <th>&nbsp;</th>
+                    </tr>
+                      ${trend.map(x=> `<tr><td>${x.test_name}</td><td>${this.sytleOutcome(x.a)}</td><td>${this.sytleOutcome(x.b)}</td><td>${this.sytleOutcome(x.c)}</td><td>${this.sytleOutcome(x.d)}</td><td>${this.sytleOutcome(x.e)}</td><td>${this.sytleOutcome(x.f)}</td><td>${this.sytleOutcome(x.g)}</td></tr>`).join('')}          
+                  </table>
+                </div>  
+              </div>
             </div>              
-      
-            <div>
-              <span>Tests</span>
-                <table>
-                  <tr>
-                    <th>Test</th>
-                    <th>Outcome</th>
-                  </tr>
-                    ${data[0].tests_results.map(x=> `<tr><td>${x.test_suite} - ${x.test_name}</td><td>${x.outcome}</td></tr>`).join('')}          
-                </table>
-            </div>
           </div>
         </body>
       </html>
@@ -131,6 +110,11 @@ module.exports = {
         message: `Failed to create [${saveLocation}]`
       };
     }
+  },
+  sytleOutcome(outcome) {
+    return outcome == 'Passed' 
+      ? '<span class="icon has-text-success"><i class="fas fa-check-circle"></i></span>' 
+      : '<span class="icon has-text-danger"><i class="fas fa-times-circle"></i></span>'
   },
   meh() {
     var testSuites = n[0].suite_summary.map(x => x.testsuite)

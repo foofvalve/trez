@@ -14,16 +14,17 @@ describe('htmler', function() {
   it('generates html file', function() {
     var result = htmler.generateHtml(testData, testTrendData, tempDir + '\\estoutput.html');
     expect(result.result).to.equal(true);
+    console.log('result => ', result);
   });  
   
-  it('handles empty data', function() {
+  xit('handles empty data', function() {
     testData = [{}];
     var result = htmler.generateHtml(testData, testTrendData, tempDir + '\\emptyestoutput.html');
     console.log('result => ', result)
     expect(result.result).to.equal(true);
   });  
   
-  it('fails when invalid save location is provided', function() {    
+  xit('fails when invalid save location is provided', function() {    
     var result = htmler.generateHtml(testData, testTrendData, tempDir + '\-\novalid]\testoutput.html');
     expect(result.result).to.equal(false);
     expect(result.message).to.contain('Invalid save location');    
