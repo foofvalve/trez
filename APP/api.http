@@ -1,0 +1,8 @@
+
+GET https://httpbin.org//basic-auth/user/passwd HTTP/1.1
+Authorization: Basic user passwd
+
+###
+
+GET http://localhost:8529/_db/cupboard/faux_app/results?project=IQ&from=2019-03-15&to=2019-03-17/user/passwd HTTP/1.1
+Authorization: Basic autotest ^HCBc#mdCSgGh2}
