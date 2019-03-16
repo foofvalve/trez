@@ -3,7 +3,7 @@ TODO:
 -- Misc
  * ~Fails~ show message when outcome == failed  
  * handle passed AND failed must be shown 0 if null  
-
+ * add build identifier into the trend table
 
 -- html generator
   * handle nulls
