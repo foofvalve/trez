@@ -143,6 +143,16 @@ module.exports = {
                 outcome: u.outcome
             }
         )
+
+        LET failures = (FOR doc IN testResults
+            SORT doc.testSuite
+            FILTER doc.outcome == 'failed' && ${filter}  
+            RETURN {
+              testSuite: doc.testSuite
+              , testName: doc.testName
+              , message: doc.message
+              , stacktrace: doc.stacktrace 
+            })
         
         LET tests_details = (
           FOR doc IN base_results           
@@ -154,7 +164,8 @@ module.exports = {
                 RETURN { [ u.outcome ]: u.count }), 
             suite_summary : suite_summary,
             tests_results: test_results,
-            test_details: tests_details
+            test_details: tests_details,
+            test_failures: failures
         }  
       `
     });

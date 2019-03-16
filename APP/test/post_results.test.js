@@ -96,7 +96,7 @@ describe('POST /results', function(done) {
         const {error, value}  = joi.validate(res.body, expectedSchema);
         
         if(error != null) {
-          console.log('', errors);
+          console.log('', error);
           expect(value).to.be.null;
         }       
       }).end(done); 

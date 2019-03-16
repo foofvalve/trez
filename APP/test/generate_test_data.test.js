@@ -8,11 +8,11 @@ describe('POST /results', function(done) {
   var payLoad = [];
 
   beforeEach(function() {
-    var numberTests = 2000;
-    var numberTestSuites = 10;
+    var numberTests = 2;
+    var numberTestSuites = 1;
     var tests = [];
     var testSuites = [];
-    var numberOfDays = 15;
+    var numberOfDays = 1;
     var outcome = ['Passed', 'Failed'];
 
     for (var i = 0; i <= numberTestSuites; i++) {

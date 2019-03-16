@@ -1,9 +1,14 @@
 TODO:
 
+-- Misc
+ * ~Fails~ show message when outcome == failed  
+ * handle passed AND failed must be shown 0 if null  
+
+
 -- html generator
   * handle nulls
-  * handle passed AND failed must be shown 0 if null
-  * ~Fails~ show message when outcome == failed
+  
+  
   * tart up => skin and icons > maybe graph
  
 

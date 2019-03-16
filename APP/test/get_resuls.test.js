@@ -32,7 +32,8 @@ describe('GET /results', function() {
           stat_summary: joi.object().required(),
           suite_summary: joi.array().required(),
           tests_results: joi.array().required(),
-          test_details: joi.object()
+          test_details: joi.object(),
+          tests_results: joi.array().optional()
         };
   
         const {error, value}  = joi.validate(res.body, expectedSchema);
