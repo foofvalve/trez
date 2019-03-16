@@ -1,9 +1,10 @@
 var writeFile = require('write');
 const fileChecker = require('../lib').fileExists;
 const defaultTo =  require('../lib').setDefault;
+const _ = require('lodash');
 
 module.exports = {
-  generateHtml(data, trend, saveLocation) {
+  generateHtml(data, trend) {
 // TODO: check if savelocation is valid folder
 /*
     if (!fileChecker(saveLocation)) {
@@ -27,10 +28,10 @@ module.exports = {
         <body>
           <div class="container is-fluid">
             <div class="notification">
-              <h2 class="title is-2">Summary - Build: ${defaultTo(data[0].test_details[0].meta[0].build, '-')}</h2>
-              <a class="button is-success">${defaultTo(data[0].stat_summary.Passed, 0)} | Passed</a>
-              <a class="button is-danger">${defaultTo(data[0].stat_summary.Failed, 0)} | Failed</a>
-              <a class="button is-info">${defaultTo(data[0].stat_summary.Failed, 0) + defaultTo(data[0].stat_summary.Passed, 0)} | Total</a>
+              <h2 class="title is-2">Summary - Build: ${_.get(data[0], 'build_number[0].build','unknown')}</h2>
+              <a class="button is-success">${_.get(data[0], 'stat_summary.passed', 0)} | Passed</a>
+              <a class="button is-danger">${_.get(data[0], 'stat_summary.failed', 0)} | Failed</a>
+              <a class="button is-info">${_.get(data[0], 'stat_summary.failed', 0) + _.get(data[0], 'stat_summary.passed', 0)} | Total</a>
               <hr/>
             </div>
             <hr/>
@@ -46,6 +47,7 @@ module.exports = {
                       ${data[0].suite_summary.map(x=> `<tr><td>${x.testsuite}</td><td>${x.outcome}</td><td>${x.count}</td></tr>`).join('')}          
                   </table>
                 </div>
+              
               </div> 
               <div class="column">
                 <div class="box">               
@@ -64,6 +66,16 @@ module.exports = {
                   </table>
                 </div>  
               </div>
+              <div class="box">              
+                <table class="table">
+                  <tr>
+                    <th>Test Suite</th>
+                    <th>Failure</th>
+                    <th></th>
+                  </tr>
+                    ${data[0].test_failures.map(x=> `<tr><td>${x.testSuite}</td><td>${x.message}</td><td>${x.stacktrace}</td></tr>`).join('')}          
+                </table>
+              </div>  
             </div>              
           </div>
         </body>
@@ -92,7 +104,9 @@ module.exports = {
       `
     }
       
+    return html; 
     //console.log(html);
+    /*
     try {
       writeFile(saveLocation, html, function (err) {
         if (err) {
@@ -110,11 +124,16 @@ module.exports = {
         message: `Failed to create [${saveLocation}]`
       };
     }
+    */
   },
   sytleOutcome(outcome) {
-    return outcome == 'Passed' 
-      ? '<span class="icon has-text-success"><i class="fas fa-check-circle"></i></span>' 
-      : '<span class="icon has-text-danger"><i class="fas fa-times-circle"></i></span>'
+    if(outcome.toLowerCase() == 'passed' ) {
+      return '<span class="icon has-text-success"><i class="fas fa-check-circle"></i></span>';
+    } else if(outcome.toLowerCase() == 'failed' ) {
+      return '<span class="icon has-text-danger"><i class="fas fa-times-circle"></i></span>';
+    } else {
+      return '<span class="icon"><i class="fas"></i></span>'
+    }    
   },
   meh() {
     var testSuites = n[0].suite_summary.map(x => x.testsuite)

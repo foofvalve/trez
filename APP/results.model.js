@@ -106,6 +106,8 @@ module.exports = {
     return q.execute().toArray();  
   },  
   getResults(options) { 
+    console.log(`options => ${JSON.stringify(options)}`);
+    
     var filter = `LOWER(doc.project) == @project 
                   && DATE_ISO8601(doc.execution) >= DATE_ISO8601(@from) 
                   && DATE_ISO8601(doc.execution) <= DATE_ISO8601(@to) `;
@@ -113,61 +115,70 @@ module.exports = {
       filter += '&& doc.meta[*].build == [@build]';
     }
 
-    const q = db._createStatement({
-      'query': `
-        LET base_results = (FOR doc IN testResults
-          SORT CONCAT(doc.testSuite," - ", doc.testName)
-          FILTER ${filter}     
-          RETURN doc)
+    var qStr = `
+    LET base_results = (FOR doc IN testResults
+      SORT CONCAT(doc.testSuite," - ", doc.testName)
+      FILTER ${filter}     
+      RETURN doc)
 
-        LET stat_summary = (FOR doc IN base_results          
-          COLLECT outcome = doc.outcome  WITH COUNT INTO count
-          RETURN { 
-          outcome, 
-          count
+    LET stat_summary = (FOR doc IN base_results          
+      COLLECT outcome = doc.outcome  WITH COUNT INTO count
+      RETURN { 
+      outcome, 
+      count
+    })
+    
+    LET suite_summary = (FOR doc IN base_results          
+      COLLECT testsuite = doc.testSuite, outcome = doc.outcome  WITH COUNT INTO count
+      RETURN {  
+        testsuite, 
+        outcome, 
+        count
+    })  
+    
+    LET test_results = (
+        FOR u IN base_results            
+        RETURN {
+            test_suite:u.testSuite, 
+            test_name:u.testName, 
+            outcome: u.outcome
+        }
+    )
+
+    LET failures = (FOR doc IN testResults
+        SORT doc.testSuite
+        FILTER doc.outcome == 'failed' && ${filter}  
+        RETURN {
+          testSuite: doc.testSuite
+          , testName: doc.testName
+          , message: doc.message
+          , stacktrace: doc.stacktrace 
         })
-        
-        LET suite_summary = (FOR doc IN base_results          
-          COLLECT testsuite = doc.testSuite, outcome = doc.outcome  WITH COUNT INTO count
-          RETURN {  
-            testsuite, 
-            outcome, 
-            count
-        })  
-        
-        LET test_results = (
-            FOR u IN base_results            
-            RETURN {
-                test_suite:u.testSuite, 
-                test_name:u.testName, 
-                outcome: u.outcome
-            }
-        )
+    
+    LET tests_details = (
+      FOR doc IN base_results           
+      RETURN UNSET(doc, "_key", "_id", "_rev"))
 
-        LET failures = (FOR doc IN testResults
-            SORT doc.testSuite
-            FILTER doc.outcome == 'failed' && ${filter}  
-            RETURN {
-              testSuite: doc.testSuite
-              , testName: doc.testName
-              , message: doc.message
-              , stacktrace: doc.stacktrace 
-            })
-        
-        LET tests_details = (
-          FOR doc IN base_results           
-          RETURN UNSET(doc, "_key", "_id", "_rev"))
-        
-        RETURN { 
-            stat_summary: MERGE(
-                FOR u IN stat_summary
-                RETURN { [ u.outcome ]: u.count }), 
-            suite_summary : suite_summary,
-            tests_results: test_results,
-            test_details: tests_details,
-            test_failures: failures
-        }  
-      `
+    LET build_info = (FOR doc IN testResults
+      SORT doc.meta[*].build
+      FILTER Length(CONCAT(doc.meta[*].build,''))  > 4 && ${filter} 
+      RETURN distinct {build: doc.meta[*].build})
+    
+    RETURN { 
+        stat_summary: MERGE(
+            FOR u IN stat_summary
+            RETURN { [ u.outcome ]: u.count }), 
+        suite_summary : suite_summary,
+        tests_results: test_results,
+        test_details: tests_details,
+        test_failures: failures,
+        build_number: build_info
+    }  
+  `
+    console.log('query string=> ', qStr)
+
+    const q = db._createStatement({
+      'query': qStr
     });
     q.bind('project', options.project.toLowerCase());
     q.bind('from', options.from);

@@ -7,6 +7,7 @@ const testResults = db._collection('testResults');
 const lib = require('./lib');
 const Results = require('./results.model');
 const simpleAuth = require('./lib/simple.auth');
+const htmler = require('./lib/htmler');
 
 module.context.use(router);
 
@@ -45,6 +46,7 @@ router.post('/results', function (req, res) {
       var niceDate = new Date(doc.execution)
       doc.execution_nice = niceDate.toISOString();       
       doc.execution_date = niceDate.toISOString().split('T')[0];
+      doc.outcome = doc.outcome.toLowerCase();
 
       var existingDoc = Results.getTestResultId(doc);        
       if (existingDoc.length == 0) {
@@ -100,7 +102,7 @@ router.get('/results', function (req, res) {
       //show_details: lib.setDefault(req.queryParams.show_details, false),
       build: lib.setDefault(req.queryParams.build, null)
     };
-    console.log(`options => ${JSON.stringify(options)}`);
+    
     const resultsData = Results.getResults(options);
     console.log(resultsData)
     if (resultsData != undefined || resultsData.length != 0) {
@@ -111,7 +113,7 @@ router.get('/results', function (req, res) {
   } else {
     res.status(401).send('Unauthorized');
   }    
-}, 'getStacks')
+}, 'get results for given date range')
   .queryParam('project', joi.string().optional(), 'The project code, defaults to IQ')
   .queryParam('from', joi.string().regex(/\d{4}-\d{2}\-\d{2}/).optional(), 'The test execution from date, example 2019-02-08')
   .queryParam('to', joi.string().regex(/\d{4}-\d{2}\-\d{2}/).optional(), 'The test execution to date, example 2019-02-08')
@@ -138,7 +140,7 @@ router.get('/results/trend', function (req, res) {
   } else {
     res.status(401).send('Unauthorized');
   }    
-}, 'getStacks')
+}, 'get results trend')
   .response(joi.object(), 'The results trend')
   .response(401, joi.object(), 'Unauthorized')
   .response(403, joi.object(), 'Forbidden')
@@ -146,3 +148,41 @@ router.get('/results/trend', function (req, res) {
   .response(400, joi.array(), 'Bad Request')
   .summary('Get all results')
   .description('Retrieve all results that match the provide filters');
+
+
+router.get('/results/send', function (req, res) {
+
+    if(simpleAuth.verify(req.headers.authorization)) {
+      const options = {
+        project: lib.setDefault(req.queryParams.project, 'IQ'),
+        from: lib.setFromDate(req.queryParams.from),
+        to: lib.setToDate(req.queryParams.to),
+        build: lib.setDefault(req.queryParams.build, null),
+        email: req.queryParams.email
+      };
+
+      const trendData = Results.getTrend();
+      const resultsData = Results.getResults(options);
+      var result = htmler.generateHtml(resultsData, trendData);
+      console.log('result => ', result );
+      if (result.result) {
+        // send email here
+      }
+
+      if (result.result) {
+        res.status(200).send('HTML generate, EMAIL todo');
+      } else {
+        res.status(404).send(result);    
+      }    
+    } else {
+      res.status(401).send('Unauthorized');
+    }    
+  }, 'get results trend')
+    .response(joi.object(), 'The results trend')
+    .response(401, joi.object(), 'Unauthorized')
+    .response(403, joi.object(), 'Forbidden')
+    .response(404, joi.object(), 'Not Found')
+    .response(400, joi.array(), 'Bad Request')
+    .summary('Get all results')
+    .description('Retrieve all results that match the provide filters');
+  
