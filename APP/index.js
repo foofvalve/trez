@@ -150,7 +150,7 @@ router.get('/results/trend', function (req, res) {
   .description('Retrieve all results that match the provide filters');
 
 
-router.get('/results/send', function (req, res) {
+router.get('/results/html', function (req, res) {
 
     if(simpleAuth.verify(req.headers.authorization)) {
       const options = {
@@ -164,16 +164,7 @@ router.get('/results/send', function (req, res) {
       const trendData = Results.getTrend();
       const resultsData = Results.getResults(options);
       var result = htmler.generateHtml(resultsData, trendData);
-      console.log('result => ', result );
-      if (result.result) {
-        // send email here
-      }
-
-      if (result.result) {
-        res.status(200).send('HTML generate, EMAIL todo');
-      } else {
-        res.status(404).send(result);    
-      }    
+      res.status(200).send(result);      
     } else {
       res.status(401).send('Unauthorized');
     }    

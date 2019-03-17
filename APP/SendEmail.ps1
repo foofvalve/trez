@@ -1,7 +1,17 @@
-﻿$email = "autotest.rightcrowd@gmail.com" 
- 
-$pass = "<secret>" 
- 
+﻿$from = "2019-03-15"
+$to = "2019-03-18"
+$project ="IQ"
+
+$uri = "http://localhost:8529/_db/cupboard/faux_app/results/html?project=$project&from=$from&to=$to"
+$Header = {
+    Authorization = "Basic YXV0b3Rlc3Q6XkhDQmMjbWRDU2dHaDJ9"
+}
+
+$R = Invoke-RestMethod -Method GET -ContentType application/json -URI $uri -Headers $Header 
+$R
+
+$email = "autotest.rightcrowd@gmail.com"  
+$pass = "1qa!QA1qa"  
 $smtpServer = "smtp.gmail.com" 
  
  
@@ -14,9 +24,6 @@ $msg.BodyEncoding = [system.Text.Encoding]::Unicode
 $msg.SubjectEncoding = [system.Text.Encoding]::Unicode 
 $msg.IsBodyHTML = $true  
 $msg.Subject = "Test mail from PS" 
-$msg.Body = "<h2> Test mail from PS </h2> 
-</br> 
-Hi there 
-"  
+$msg.Body = $R
 $SMTP.Credentials = New-Object System.Net.NetworkCredential("$email", "$pass"); 
 $smtp.Send($msg)
