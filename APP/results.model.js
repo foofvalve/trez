@@ -108,9 +108,7 @@ module.exports = {
   getResults(options) { 
     console.log(`options => ${JSON.stringify(options)}`);
     
-    var filter = `LOWER(doc.project) == @project 
-                  && DATE_ISO8601(doc.execution) >= DATE_ISO8601(@from) 
-                  && DATE_ISO8601(doc.execution) <= DATE_ISO8601(@to) `;
+    var filter = `LOWER(doc.project) == @project && doc.execution >= DATE_ISO8601(@from) && doc.execution <= DATE_ISO8601(@to) `;
     if (options.build != null) {
       filter += '&& doc.meta[*].build == [@build]';
     }
@@ -127,14 +125,33 @@ module.exports = {
       outcome, 
       count
     })
-    
-    LET suite_summary = (FOR doc IN base_results          
+  
+    LET suite_summary_raw = (FOR doc IN base_results          
       COLLECT testsuite = doc.testSuite, outcome = doc.outcome  WITH COUNT INTO count
       RETURN {  
         testsuite, 
         outcome, 
         count
-    })  
+    }) 
+
+    LET suites = (FOR doc in suite_summary_raw return distinct {testsuite:  doc.testsuite}) 
+
+    LET passed = (FOR doc in suites return {testsuite: doc.testsuite, outcome: "passed", count: 0}) 
+    LET fails = (FOR doc in suites return {testsuite: doc.testsuite, outcome: "failed", count: 0})
+    LET default_outcomes = APPEND(fails, passed)
+    LET ungrouped = APPEND(suite_summary_raw, default_outcomes)
+    
+    LET suite_summary = (FOR doc in ungrouped
+        COLLECT 
+            testsuite = doc.testsuite,
+            outcome = doc.outcome
+            AGGREGATE  total = SUM(doc.count)
+            SORT testsuite, outcome desc
+            RETURN {
+                testsuite: testsuite,
+                outcome: outcome,
+                count: total
+            })
     
     LET test_results = (
         FOR u IN base_results            

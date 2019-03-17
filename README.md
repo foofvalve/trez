@@ -1,26 +1,15 @@
 TODO:
 
 -- Misc
- * ~Fails~ show message when outcome == failed  
- * handle passed AND failed must be shown 0 if null  
- * add build identifier into the trend table
+ * tart up => skin and icons > maybe graph
+ * fix date range filter
 
--- html generator
-  * handle nulls
-  
-  
-  * tart up => skin and icons > maybe graph
- 
 
-- email senderer
 
 - write supertests
 - implement ALL filters
 - implement 'Show Test Details'
-- custom jasmine reporter to post to
-  * must get the build identifier
-  * must get the hostname
-- foxx reverse proxy  
+
 
 
 DONE:
@@ -47,3 +36,14 @@ DONE:
  * include trend data
   * toPdf()
  - results uploader script 
+  * ~Fails~ show message when outcome == failed  
+ * handle passed AND failed must be shown 0 if null  
+ - email senderer
+ - custom jasmine reporter to post to
+  * must get the build identifier
+  * must get the hostname
+- foxx reverse proxy  
+-- html generator
+  * handle nulls
+ * merge [Testsuite pass:0, fail:0]
+ * add build identifier into the trend table    

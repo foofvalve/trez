@@ -73,7 +73,7 @@ module.exports = {
                     <th>Failure</th>
                     <th></th>
                   </tr>
-                    ${data[0].test_failures.map(x=> `<tr><td>${x.testSuite}</td><td>${x.message}</td><td>${x.stacktrace}</td></tr>`).join('')}          
+                    ${data[0].test_failures.map(x=> `<tr><td>${x.testSuite}</td><td>${x.message}</td><td></td></tr>`).join('')}          
                 </table>
               </div>  
             </div>              
@@ -128,9 +128,9 @@ module.exports = {
   },
   sytleOutcome(outcome) {
     if(outcome.toLowerCase() == 'passed' ) {
-      return '<span class="icon has-text-success"><i class="fas fa-check-circle"></i></span>';
+      return '<span><p>✅</p></span>';
     } else if(outcome.toLowerCase() == 'failed' ) {
-      return '<span class="icon has-text-danger"><i class="fas fa-times-circle"></i></span>';
+      return '<span><p>❌</p></span>';
     } else {
       return '<span class="icon"><i class="fas"></i></span>'
     }    
