@@ -3,7 +3,8 @@ TODO:
 -- Misc
  * tart up => skin and icons > maybe graph
  * fix date range filter
-
+ * pivot by buildidentifier
+ * loose update requirements
 
 
 - write supertests
