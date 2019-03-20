@@ -41,6 +41,7 @@ module.exports = {
     testCaseNames.forEach((testFully) => {
       var test = testFully.full_test
       summary.push({
+        "test_suite": test.split('-')[0].trim(),
         "test_name" : test,
         "a": this.getTestOutcome(test, rez[6]),
         "b": this.getTestOutcome(test, rez[5]),
