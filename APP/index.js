@@ -161,9 +161,8 @@ router.get('/results/html', function (req, res) {
         email: req.queryParams.email
       };
 
-      const trendData = Results.getTrend();
       const resultsData = Results.getResults(options);
-      var result = htmler.generateHtml(resultsData, trendData);
+      var result = htmler.generateBasicHtml(resultsData);
       res.status(200).send(result);      
     } else {
       res.status(401).send('Unauthorized');

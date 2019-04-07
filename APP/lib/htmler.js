@@ -11,65 +11,15 @@ module.exports = {
       <!doctype html>
       <html lang="en">
       <head>
-      <meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>Test Automation Results</title>
-      
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      
-      <style type="text/css">
-      @media screen and (max-width:600px) {
-        h1 {
-          font-size: 32px !important;
-          line-height: 32px !important;
-        }
-      }
-      @media only screen and (max-width: 480px) {
-        .button-container {
-          display: block !important;
-          width: 100% !important;
-          margin-bottom: 10px;
-        }
-        .button-spacer {
-          display: none !important;
-        }
-      }
-      </style></head>
-        <body style="-ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; background-color: #eeeeee; height: 100%; margin: 0; padding: 0; width: 100%;" bgcolor="#eeeeee">
-          <div>
-          <table border="0" cellpadding="0" cellspacing="0" width="100%" style="-ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; border-collapse: collapse; max-width: 600px; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
-            <tr>
-              <td bgcolor="#ffffff" align="left" class="font-stack font-color" style="-ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #1c1c1c; font-family: Roboto, 'Helvetica Neue', HelveticaNeue, Helvetica, Arial, sans-serif; font-size: 22px; font-weight: 700; line-height: 25px; mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding: 0px 25px 0px 25px;">
-                <p style="margin: 0;">Howdy</p>
-              </td>
-            </tr>
-            <tr>
-            <td bgcolor="#ffffff" align="left" style="-ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding: 0px 25px 20px 25px;">
-              <table width="100%" border="0" cellspacing="0" cellpadding="0" style="-ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; border-collapse: collapse; border-left: solid 3px #006DCB; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
-                <tbody>
-                <tr>
-                  <td bgcolor="#f7f7f7" align="left" class="font-stack font-color body-text" style="-ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #1c1c1c; font-family: Roboto, 'Helvetica Neue', HelveticaNeue, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px; mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding: 12px 25px 2px 25px;">
-                    <p style="margin: 0; font-weight: 700;"><b>Summary - Build: ${_.get(data[0], 'build_number[0].build','unknown')}</b></p>
-                  </td>
-                </tr>    
-                <tr>
-                  <td bgcolor="#f7f7f7" align="left" class="font-stack font-color body-text" style="-ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #1c1c1c; font-family: Roboto, 'Helvetica Neue', HelveticaNeue, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px; mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding: 2px 25px 12px 25px;">
-                    <p style="margin: 0;">${_.get(data[0], 'stat_summary.passed', 0)} | Passed</p>
-                  </td>
-                </tr>
-                <tr>
-                  <td bgcolor="#f7f7f7" align="left" class="font-stack font-color body-text" style="-ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #1c1c1c; font-family: Roboto, 'Helvetica Neue', HelveticaNeue, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px; mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding: 2px 25px 12px 25px;">
-                    <p style="margin: 0;">${_.get(data[0], 'stat_summary.failed', 0)} | Failed</p>
-                  </td>
-                </tr>
-                <tr>
-                  <td bgcolor="#f7f7f7" align="left" class="font-stack font-color body-text" style="-ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #1c1c1c; font-family: Roboto, 'Helvetica Neue', HelveticaNeue, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px; mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding: 2px 25px 12px 25px;">
-                    <p style="margin: 0;">${_.get(data[0], 'stat_summary.failed', 0) + _.get(data[0], 'stat_summary.passed', 0)} | Total</p>
-                  </td>
-                </tr>
-              </tbody></table>
-            </td>
-          </tr>      
-          </table>
+      </head>
+        <body>
+          <div style="width:650px;font:normal 10px Verdana, Arial, sans-serif;">
+            <div>
+              <h1><b>Summary - Build: ${_.get(data[0], 'build_number[0].build','unknown')}</b></h1>
+              <span>${_.get(data[0], 'stat_summary.passed', 0)} | Passed</span>
+              <span>${_.get(data[0], 'stat_summary.failed', 0)} | Failed</span>
+              <span>${_.get(data[0], 'stat_summary.failed', 0) + _.get(data[0], 'stat_summary.passed', 0)} | Total</span>              
+            </div>
             <hr/>
             <div>
               <div>
@@ -104,19 +54,13 @@ module.exports = {
               </div>
               <hr/>
               <div>              
-                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="-ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; border-collapse: collapse; max-width: 600px; mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+                <table>
                   <tr>
-                    <th align="left" valign="top" bgcolor="#e40000" style="font-family: 'Ciutadella-Regular', Arial, Helvetica, sans-serif; font-size: 24px; mso-line-height-rule: exactly;  color: #ffffff;">Failures</th>                    
+                    <th>Test Suite</th>
+                    <th>Failure</th>
+                    <th></th>
                   </tr>
-                    ${data[0].test_failures.map(x=> `
-                    <tr>
-                      <td bgcolor="#ffffff" align="left" class="font-stack font-color body-text" style="-ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #1c1c1c; font-family: Roboto, 'Helvetica Neue', HelveticaNeue, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px; mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding: 0px 25px 20px 25px;">
-                        <p style="margin: 0;">
-                          <span><b>${x.testSuite} - ${x.testName}</b></span>
-                          <div>${x.message}</div>
-                        </p>
-                      </td>
-                    </tr>`).join('')}          
+                    ${data[0].test_failures.map(x=> `<tr><td>${x.testSuite}</td><td>${x.message}</td><td></td></tr>`).join('')}          
                 </table>
               </div>  
             </div>              
@@ -169,13 +113,77 @@ module.exports = {
     }
     */
   },
+  generateBasicHtml(data) {
+    var html = '';
+    console.log('data[0].suite_summary.length =>', data[0].suite_summary.length);
+    if (data != [{}]  && data[0].stat_summary != undefined && data[0].stat_summary != {} && data[0].suite_summary.length != 0) {
+      html = `
+      <!doctype html>
+      <html lang="en">
+      <head>
+      </head>
+        <body>
+          <div>
+            <div>
+              <p style="-ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #1c1c1c; font-family: Roboto, 'Helvetica Neue', HelveticaNeue, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px; mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding: 12px 25px 2px 25px;"><b >Summary - Build: ${_.get(data[0], 'build_number[0].build','unknown')}</b></p>
+              <p style="width:100;font:normal 10 Verdana, Arial, sans-serif;">${_.get(data[0], 'stat_summary.passed', 0)} | ✅ </p>
+              <p style="width:100;font:normal 10 Verdana, Arial, sans-serif;">${_.get(data[0], 'stat_summary.failed', 0)} | ❌ </p>
+              <p style="-ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #1c1c1c; font-family: Roboto, 'Helvetica Neue', HelveticaNeue, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px; mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding: 12px 25px 2px 25px;">${_.get(data[0], 'stat_summary.failed', 0) + _.get(data[0], 'stat_summary.passed', 0)} | Total</p>              
+            </div>
+            <hr/>
+            <div>
+              <div>
+                <div>              
+                    <table>
+                    <tr>
+                      <th style="-ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #1c1c1c; font-family: Roboto, 'Helvetica Neue', HelveticaNeue, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px; mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding: 12px 25px 2px 25px;">Test Suite</th>
+                      <th style="-ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #1c1c1c; font-family: Roboto, 'Helvetica Neue', HelveticaNeue, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px; mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding: 12px 25px 2px 25px;">Outcome</th>
+                      <th></th>
+                    </tr>
+                      ${data[0].suite_summary.map(x=> `<tr><td style="width:500;font:normal 10px Verdana, Arial, sans-serif;">${x.testsuite}</td><td style="width:50;font:normal 10px Verdana, Arial, sans-serif;">${x.outcome}</td><td style="width:50;font:normal 10px Verdana, Arial, sans-serif;">${x.count}</td></tr>`).join('')}          
+                  </table>
+                </div>              
+              </div> 
+              <hr/>
+              <div>
+                <div>              
+                    <table>
+                    <tr>
+                      <th style="-ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #1c1c1c; font-family: Roboto, 'Helvetica Neue', HelveticaNeue, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px; mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding: 12px 25px 2px 25px;">Test Suite</th>
+                      <th style="-ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #1c1c1c; font-family: Roboto, 'Helvetica Neue', HelveticaNeue, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px; mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding: 12px 25px 2px 25px;">Outcome</th>
+                      <th></th>
+                    </tr>
+                      ${data[0].tests_results.map(x=> `<tr><td style="width:500;font:normal 10px Verdana, Arial, sans-serif;">${x.test_suite} ${x.test_name}</td><td style="width:50;font:normal 10px Verdana, Arial, sans-serif;">${this.sytleOutcome(x.outcome)}</td></tr>`).join('')}          
+                  </table>
+                </div>              
+              </div> 
+              <hr/>              
+              <div>              
+                <table>
+                  <tr>                    
+                    <th style="-ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #1c1c1c; font-family: Roboto, 'Helvetica Neue', HelveticaNeue, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px; mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding: 12px 25px 2px 25px;">Failure</th>                    
+                  </tr>
+                    ${data[0].test_failures.map(x=> `<tr><td style="width:500;font:normal 10px Verdana, Arial, sans-serif;"><p>${x.testSuite}</p><p>${x.message}</p><p><pre>${x.stacktrace}</pre></p></td></tr><hr />`).join('')}          
+                </table>
+              </div>  
+            </div>              
+          </div>
+        </body>
+      </html>
+      `
+    } else {
+      html = `No Results`
+    }
+      
+    return html; 
+  },  
   sytleOutcome(outcome) {
     if(outcome.toLowerCase() == 'passed' ) {
       return '<span><p>✅</p></span>';
     } else if(outcome.toLowerCase() == 'failed' ) {
       return '<span><p>❌</p></span>';
     } else {
-      return '<span><i></i></span>'
+      return '<span class="icon"><i class="fas"></i></span>'
     }    
   },
   meh() {
