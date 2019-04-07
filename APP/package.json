@@ -29,7 +29,8 @@
     "test": "mocha ./test/*.test.js",
     "test-post": "mocha ./test/post_results.test.js",
     "test-gen-data": "mocha ./test/generate_test_data.test.js",
-    "test-gen-html": "mocha ./test/htmler.test.js"
+    "test-gen-html": "mocha ./test/htmler.test.js",
+    "test-html": "mocha ./test/htmler.generate.test.js"
   },
   "author": "",
   "license": "ISC"

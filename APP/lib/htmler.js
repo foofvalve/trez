@@ -126,44 +126,19 @@ module.exports = {
           <div>
             <div>
               <p style="-ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #1c1c1c; font-family: Roboto, 'Helvetica Neue', HelveticaNeue, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px; mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding: 12px 25px 2px 25px;"><b >Summary - Build: ${_.get(data[0], 'build_number[0].build','unknown')}</b></p>
-              <p style="width:100;font:normal 10 Verdana, Arial, sans-serif;">${_.get(data[0], 'stat_summary.passed', 0)} | ✅ </p>
-              <p style="width:100;font:normal 10 Verdana, Arial, sans-serif;">${_.get(data[0], 'stat_summary.failed', 0)} | ❌ </p>
-              <p style="-ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #1c1c1c; font-family: Roboto, 'Helvetica Neue', HelveticaNeue, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px; mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding: 12px 25px 2px 25px;">${_.get(data[0], 'stat_summary.failed', 0) + _.get(data[0], 'stat_summary.passed', 0)} | Total</p>              
+              <p style="-ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #1c1c1c; font-family: Roboto, 'Helvetica Neue', HelveticaNeue, Helvetica, Arial, sans-serif; font-size: 12px; font-weight: 400; line-height: 2px; mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding: 1px 25px 1px 25px;">✅ | ${_.get(data[0], 'stat_summary.passed', 0)}  </p>
+              <p style="-ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #1c1c1c; font-family: Roboto, 'Helvetica Neue', HelveticaNeue, Helvetica, Arial, sans-serif; font-size: 12px; font-weight: 400; line-height: 2px; mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding: 1px 25px 1px 25px;">❌ | ${_.get(data[0], 'stat_summary.failed', 0)} </p>                           
             </div>
             <hr/>
+            ${this.renderTestResult(data[0])}
             <div>
-              <div>
-                <div>              
-                    <table>
-                    <tr>
-                      <th style="-ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #1c1c1c; font-family: Roboto, 'Helvetica Neue', HelveticaNeue, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px; mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding: 12px 25px 2px 25px;">Test Suite</th>
-                      <th style="-ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #1c1c1c; font-family: Roboto, 'Helvetica Neue', HelveticaNeue, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px; mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding: 12px 25px 2px 25px;">Outcome</th>
-                      <th></th>
-                    </tr>
-                      ${data[0].suite_summary.map(x=> `<tr><td style="width:500;font:normal 10px Verdana, Arial, sans-serif;">${x.testsuite}</td><td style="width:50;font:normal 10px Verdana, Arial, sans-serif;">${x.outcome}</td><td style="width:50;font:normal 10px Verdana, Arial, sans-serif;">${x.count}</td></tr>`).join('')}          
-                  </table>
-                </div>              
-              </div> 
-              <hr/>
-              <div>
-                <div>              
-                    <table>
-                    <tr>
-                      <th style="-ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #1c1c1c; font-family: Roboto, 'Helvetica Neue', HelveticaNeue, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px; mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding: 12px 25px 2px 25px;">Test Suite</th>
-                      <th style="-ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #1c1c1c; font-family: Roboto, 'Helvetica Neue', HelveticaNeue, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px; mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding: 12px 25px 2px 25px;">Outcome</th>
-                      <th></th>
-                    </tr>
-                      ${data[0].tests_results.map(x=> `<tr><td style="width:500;font:normal 10px Verdana, Arial, sans-serif;">${x.test_suite} ${x.test_name}</td><td style="width:50;font:normal 10px Verdana, Arial, sans-serif;">${this.sytleOutcome(x.outcome)}</td></tr>`).join('')}          
-                  </table>
-                </div>              
-              </div> 
               <hr/>              
               <div>              
                 <table>
                   <tr>                    
-                    <th style="-ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #1c1c1c; font-family: Roboto, 'Helvetica Neue', HelveticaNeue, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px; mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding: 12px 25px 2px 25px;">Failure</th>                    
+                    <th style="-ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #1c1c1c; font-family: Roboto, 'Helvetica Neue', HelveticaNeue, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px; mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding: 12px 25px 2px 25px;">Failures</th>                    
                   </tr>
-                    ${data[0].test_failures.map(x=> `<tr><td style="width:500;font:normal 10px Verdana, Arial, sans-serif;"><p>${x.testSuite}</p><p>${x.message}</p><p><pre>${x.stacktrace}</pre></p></td></tr><hr />`).join('')}          
+                    ${data[0].test_failures.map(x=> `<tr><td><p style="width:600;font-weight: bold;font:normal 12px Verdana, Arial, sans-serif;">${x.testSuite}</p><p style="width:600;font:normal 10px Verdana, Arial, sans-serif;">${x.message}</p><p><pre style="width:800;background: #efefef;font:normal 10px Verdana, Arial, sans-serif;">${x.stacktrace}</pre></p></td></tr><hr />`).join('')}          
                 </table>
               </div>  
             </div>              
@@ -177,6 +152,25 @@ module.exports = {
       
     return html; 
   },  
+  renderTestResult(data) {
+    allTestSuites = data.tests_results.map(n => n.test_suite);
+    var testSuites = Array.from(new Set(allTestSuites));
+    var testSuiteStyle = 'style="-ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #1c1c1c; font-family: Roboto, HelveticaNeue, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px; mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding: 12px 25px 2px 25px;"';
+    var html = '';
+
+    testSuites.forEach(testSuite => {
+      html += `<table cellpadding="0" cellspacing="0" border="0"><tr><td ${testSuiteStyle}>${testSuite}</td></tr></table>`
+
+      html += '<table>';
+      var tests = data.tests_results.filter(n => n.test_suite == testSuite)
+      tests.forEach(test => {
+        html += `<tr><td style="width:10;font:normal 10px Verdana, Arial, sans-serif;padding: 1px 2px 2px 12px;">${this.sytleOutcome(test.outcome)}</td><td style="width:590;font:normal 10px Verdana, Arial, sans-serif;">${test.test_name}</td></tr>`        
+      });
+      html += '</table>';
+    });
+
+    return html;
+  },
   sytleOutcome(outcome) {
     if(outcome.toLowerCase() == 'passed' ) {
       return '<span><p>✅</p></span>';
