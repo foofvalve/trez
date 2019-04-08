@@ -163,7 +163,7 @@ module.exports = {
                   <tr>                    
                     <th style="-ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; color: #1c1c1c; font-family: Roboto, 'Helvetica Neue', HelveticaNeue, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 25px; mso-table-lspace: 0pt; mso-table-rspace: 0pt; padding: 12px 25px 2px 25px;">Failure</th>                    
                   </tr>
-                    ${data[0].test_failures.map(x=> `<tr><td style="width:500;font:normal 10px Verdana, Arial, sans-serif;"><p>${x.testSuite}</p><p>${x.message}</p><p><pre>${x.stacktrace}</pre></p></td></tr><hr />`).join('')}          
+                    ${data[0].test_failures.map(x=> `<tr><td style="width:500;font:normal 10px Verdana, Arial, sans-serif;"><p>${x.testSuite + ' - ' + x.testName}</p><p>${x.message}</p><p><pre>${x.stacktrace}</pre></p></td></tr><hr />`).join('')}          
                 </table>
               </div>  
             </div>              
